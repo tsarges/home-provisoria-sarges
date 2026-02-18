@@ -3,40 +3,480 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarges - Em Construção</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Sarges - Portal de Links</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f2044;
+            --blue: #1e3c72;
+            --blue-mid: #2a5298;
+            --blue-light: #3a6bc4;
+            --accent: #c8a96e;
+            --white: #ffffff;
+            --off-white: #f2f5fb;
+            --text-light: #6b7a99;
+            --text-dark: #1a2640;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--off-white);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: #ffffff;
+            padding: 40px 32px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #e4e9f4;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+        .logo {
+            max-width: 220px;
+            height: auto;
+            display: block;
+            margin: 0 auto 16px;
+            transition: transform 0.4s ease;
+            position: relative; z-index: 1;
+        }
+        .logo:hover { transform: scale(1.04); }
+        .header-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1em;
+            color: var(--text-light);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            position: relative; z-index: 1;
+        }
+
+        /* ── MAIN ── */
+        main {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* ── SECTION ── */
+        .section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            overflow: hidden;
+            animation: fadeUp 0.6s ease both;
+        }
+        .section:nth-child(1) { animation-delay: 0.05s; }
+        .section:nth-child(2) { animation-delay: 0.12s; }
+        .section:nth-child(3) { animation-delay: 0.19s; }
+        .section:nth-child(4) { animation-delay: 0.26s; }
+        .section:nth-child(5) { animation-delay: 0.33s; }
+        .section:nth-child(6) { animation-delay: 0.40s; }
+        .section:nth-child(7) { animation-delay: 0.47s; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border-bottom: 1px solid #eef0f6;
+        }
+
+        .section-emoji { font-size: 1.25em; line-height: 1; }
+
+        .section-title {
+            font-size: 0.72em;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        /* Colored left border + header tint per section */
+        .section.tribunais  { border-left: 4px solid #1e3c72; }
+        .section.juridico   { border-left: 4px solid #5c35a0; }
+        .section.email      { border-left: 4px solid #d44638; }
+        .section.produtiv   { border-left: 4px solid #0f9d58; }
+        .section.noticias   { border-left: 4px solid #f4a100; }
+        .section.ferrament  { border-left: 4px solid #00838f; }
+        .section.ias        { border-left: 4px solid #9c27b0; }
+
+        .section-header.tribunais { background: #f0f4ff; }
+        .section-header.juridico  { background: #f5f0ff; }
+        .section-header.email     { background: #fff5f5; }
+        .section-header.produtiv  { background: #f0fff6; }
+        .section-header.noticias  { background: #fffbf0; }
+        .section-header.ferrament { background: #f0fbfc; }
+        .section-header.ias       { background: #fdf0ff; }
+
+        /* ── GRID ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1px;
+            background: #eef0f6;
+        }
+
+        /* ── BUTTON ── */
+        .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 20px 12px 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.78em;
+            letter-spacing: 0.03em;
+            transition: background 0.18s ease, transform 0.18s ease;
+            text-align: center;
+            line-height: 1.3;
+            background: var(--card-bg);
+            color: var(--text-dark);
+        }
+
+        .btn:hover { transform: scale(1.03); z-index: 1; position: relative; }
+
+        .btn-icon   { font-size: 1.55em; line-height: 1; }
+        .btn-label  { font-size: 1em; color: var(--text-dark); }
+        .btn-sublabel { font-size: 0.82em; font-weight: 400; color: var(--text-light); }
+
+        .tribunais .btn:hover  { background: #f0f4ff; }
+        .juridico .btn:hover   { background: #f5f0ff; }
+        .email .btn:hover      { background: #fff8f8; }
+        .produtiv .btn:hover   { background: #f2fff7; }
+        .noticias .btn:hover   { background: #fffdf0; }
+        .ferrament .btn:hover  { background: #f0fbfc; }
+        .ias .btn:hover        { background: #fef5ff; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            color: rgba(255,255,255,0.55);
+            text-align: center;
+            padding: 24px;
+            font-size: 0.85em;
+            letter-spacing: 0.03em;
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        /* ── ANIMATION ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            header { padding: 32px 16px 40px; }
+            main { padding: 24px 12px 48px; gap: 24px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .btn { padding: 16px 8px 12px; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <img src="img/logoSarges2025.png" alt="Logotipo Sarges" class="logo">
-    </header>
-    <main>
-        <h1>Sarges - Em Breve uma Nova Experiência</h1>
-        <p>Enquanto preparamos nosso novo site, acesse os principais portais:</p>
-        <div class="buttons-container primary-links">
-            <a href="https://www.tjsp.jus.br/" target="_blank" class="styled-button primary">TJSP</a>
-            <a href="https://www.trtsp.jus.br/" target="_blank" class="styled-button primary">TRT2</a>
-            <a href="https://www.tjrj.jus.br/" target="_blank" class="styled-button primary">TJRJ</a>
-            <a href="https://www.tjpb.jus.br/" target="_blank" class="styled-button primary">TJPB</a>
-            <a href="https://www.tjmg.jus.br/" target="_blank" class="styled-button primary">TJMG</a>
-            <a href="https://pje1g.trf3.jus.br/" target="_blank" class="styled-button primary">TRF3-1GRAU</a>
-            <a href="https://esaj.tjsp.jus.br/esaj/portal.do?servico=740000" target="_blank" class="styled-button primary">E-SAJ-SP</a>
-            <a href="https://web.proadv.adv.br/#/admin/home" target="_blank" class="styled-button primary">PROADV</a>
-            </div>
-        <div class="secondary-links">
-            <h3>Outros Links Úteis </h3>
-            <div class="buttons-container secondary-links">
-            <a href="https://www.google.com" target="_blank" class="styled-button secondary">Google</a>
-            <a href="https://www.youtube.com" target="_blank" class="styled-button secondary">YouTube</a>
-            <a href="https://www.facebook.com" target="_blank" class="styled-button secondary">Facebook</a>
-            <a href="https://mail.yahoo.com/" target="_blank" class="styled-button secondary">Yahoo Mail</a>
-            <a href="https://www.globo.com/" target="_blank" class="styled-button secondary">Globo.com</a>
-            </div>
-        </div> 
-    </main>
-    <footer>
-        <p>&copy; 2025 Sarges. Todos os direitos reservados.</p>
-    </footer>
+
+<header>
+    <img src="img/logoSarges2025.png" alt="Logotipo Sarges" class="logo">
+    <p class="header-subtitle">Portal de Links</p>
+</header>
+
+<main>
+
+    <!-- 1. TRIBUNAIS & SISTEMAS -->
+    <div class="section tribunais">
+        <div class="section-header tribunais">
+            <span class="section-emoji">⚖️</span>
+            <span class="section-title">Tribunais &amp; Sistemas Jurídicos</span>
+        </div>
+        <div class="grid">
+            <a href="https://www.tjsp.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">🏛️</span>
+                <span class="btn-label">TJSP</span>
+                <span class="btn-sublabel">São Paulo</span>
+            </a>
+            <a href="https://www.trtsp.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">🏛️</span>
+                <span class="btn-label">TRT2</span>
+                <span class="btn-sublabel">São Paulo</span>
+            </a>
+            <a href="https://www.tjrj.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">🏛️</span>
+                <span class="btn-label">TJRJ</span>
+                <span class="btn-sublabel">Rio de Janeiro</span>
+            </a>
+            <a href="https://www.tjpb.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">🏛️</span>
+                <span class="btn-label">TJPB</span>
+                <span class="btn-sublabel">Paraíba</span>
+            </a>
+            <a href="https://www.tjmg.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">🏛️</span>
+                <span class="btn-label">TJMG</span>
+                <span class="btn-sublabel">Minas Gerais</span>
+            </a>
+            <a href="https://pje1g.trf3.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">🏛️</span>
+                <span class="btn-label">TRF3</span>
+                <span class="btn-sublabel">1º Grau</span>
+            </a>
+            <a href="https://esaj.tjsp.jus.br/esaj/portal.do?servico=740000" target="_blank" class="btn">
+                <span class="btn-icon">📂</span>
+                <span class="btn-label">E-SAJ SP</span>
+                <span class="btn-sublabel">Portal</span>
+            </a>
+            <a href="https://eproc.tjsp.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">📂</span>
+                <span class="btn-label">EPROC SP</span>
+                <span class="btn-sublabel">São Paulo</span>
+            </a>
+            <a href="https://eproc.jfrj.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">📂</span>
+                <span class="btn-label">EPROC JF</span>
+                <span class="btn-sublabel">Justiça Fed. RJ</span>
+            </a>
+            <a href="https://web.proadv.adv.br/#/admin/home" target="_blank" class="btn">
+                <span class="btn-icon">💼</span>
+                <span class="btn-label">PROADV</span>
+                <span class="btn-sublabel">Gestão</span>
+            </a>
+            <a href="https://www.jusbrasil.com.br/" target="_blank" class="btn">
+                <span class="btn-icon">🔍</span>
+                <span class="btn-label">Jusbrasil</span>
+                <span class="btn-sublabel">Jurisprudência</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. UTILIDADES JURÍDICAS -->
+    <div class="section juridico">
+        <div class="section-header juridico">
+            <span class="section-emoji">📜</span>
+            <span class="section-title">Utilidades Jurídicas</span>
+        </div>
+        <div class="grid">
+            <a href="https://www.in.gov.br/" target="_blank" class="btn">
+                <span class="btn-icon">📰</span>
+                <span class="btn-label">D.O.U.</span>
+                <span class="btn-sublabel">Diário Oficial</span>
+            </a>
+            <a href="https://www.gov.br/receitafederal/pt-br" target="_blank" class="btn">
+                <span class="btn-icon">🏦</span>
+                <span class="btn-label">Receita Federal</span>
+                <span class="btn-sublabel">CPF / CNPJ</span>
+            </a>
+            <a href="https://cav.receita.fazenda.gov.br/autenticacao/login" target="_blank" class="btn">
+                <span class="btn-icon">🔐</span>
+                <span class="btn-label">e-CAC</span>
+                <span class="btn-sublabel">Receita</span>
+            </a>
+            <a href="https://www.cnj.jus.br/" target="_blank" class="btn">
+                <span class="btn-icon">⚖️</span>
+                <span class="btn-label">CNJ</span>
+                <span class="btn-sublabel">Cons. Nac. Justiça</span>
+            </a>
+            <a href="https://www.oabsp.org.br/" target="_blank" class="btn">
+                <span class="btn-icon">🎓</span>
+                <span class="btn-label">OAB/SP</span>
+                <span class="btn-sublabel">São Paulo</span>
+            </a>
+            <a href="https://www.migalhas.com.br/" target="_blank" class="btn">
+                <span class="btn-icon">📋</span>
+                <span class="btn-label">Migalhas</span>
+                <span class="btn-sublabel">Notícias Jurídicas</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. E-MAIL & COMUNICAÇÃO -->
+    <div class="section email">
+        <div class="section-header email">
+            <span class="section-emoji">✉️</span>
+            <span class="section-title">E-mail &amp; Comunicação</span>
+        </div>
+        <div class="grid">
+            <a href="https://mail.google.com/" target="_blank" class="btn">
+                <span class="btn-icon">📧</span>
+                <span class="btn-label">Gmail</span>
+                <span class="btn-sublabel">Google</span>
+            </a>
+            <a href="https://outlook.live.com/" target="_blank" class="btn">
+                <span class="btn-icon">📧</span>
+                <span class="btn-label">Outlook</span>
+                <span class="btn-sublabel">Microsoft</span>
+            </a>
+            <a href="https://mail.yahoo.com/" target="_blank" class="btn">
+                <span class="btn-icon">📧</span>
+                <span class="btn-label">Yahoo Mail</span>
+                <span class="btn-sublabel">Yahoo</span>
+            </a>
+            <a href="https://web.whatsapp.com/" target="_blank" class="btn">
+                <span class="btn-icon">💬</span>
+                <span class="btn-label">WhatsApp Web</span>
+                <span class="btn-sublabel">Mensagens</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 4. PRODUTIVIDADE & ARMAZENAMENTO -->
+    <div class="section produtiv">
+        <div class="section-header produtiv">
+            <span class="section-emoji">📁</span>
+            <span class="section-title">Produtividade &amp; Armazenamento</span>
+        </div>
+        <div class="grid">
+            <a href="https://drive.google.com/" target="_blank" class="btn">
+                <span class="btn-icon">☁️</span>
+                <span class="btn-label">Google Drive</span>
+                <span class="btn-sublabel">Google</span>
+            </a>
+            <a href="https://docs.google.com/" target="_blank" class="btn">
+                <span class="btn-icon">📝</span>
+                <span class="btn-label">Google Docs</span>
+                <span class="btn-sublabel">Google</span>
+            </a>
+            <a href="https://onedrive.live.com/" target="_blank" class="btn">
+                <span class="btn-icon">☁️</span>
+                <span class="btn-label">OneDrive</span>
+                <span class="btn-sublabel">Microsoft</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 5. FERRAMENTAS GERAIS -->
+    <div class="section ferrament">
+        <div class="section-header ferrament">
+            <span class="section-emoji">🛠️</span>
+            <span class="section-title">Ferramentas Gerais</span>
+        </div>
+        <div class="grid">
+            <a href="https://www.google.com" target="_blank" class="btn">
+                <span class="btn-icon">🔍</span>
+                <span class="btn-label">Google</span>
+                <span class="btn-sublabel">Pesquisa</span>
+            </a>
+            <a href="https://translate.google.com/" target="_blank" class="btn">
+                <span class="btn-icon">🌐</span>
+                <span class="btn-label">Tradutor</span>
+                <span class="btn-sublabel">Google</span>
+            </a>
+            <a href="https://maps.google.com/" target="_blank" class="btn">
+                <span class="btn-icon">🗺️</span>
+                <span class="btn-label">Google Maps</span>
+                <span class="btn-sublabel">Mapas</span>
+            </a>
+            <a href="https://www.canva.com/" target="_blank" class="btn">
+                <span class="btn-icon">🎨</span>
+                <span class="btn-label">Canva</span>
+                <span class="btn-sublabel">Design</span>
+            </a>
+            <a href="https://www.youtube.com" target="_blank" class="btn">
+                <span class="btn-icon">▶️</span>
+                <span class="btn-label">YouTube</span>
+                <span class="btn-sublabel">Vídeos</span>
+            </a>
+            <a href="https://www.facebook.com" target="_blank" class="btn">
+                <span class="btn-icon">👥</span>
+                <span class="btn-label">Facebook</span>
+                <span class="btn-sublabel">Social</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 6. INTELIGÊNCIAS ARTIFICIAIS -->
+    <div class="section ias">
+        <div class="section-header ias">
+            <span class="section-emoji">🤖</span>
+            <span class="section-title">Inteligências Artificiais</span>
+        </div>
+        <div class="grid">
+            <a href="https://claude.ai/" target="_blank" class="btn">
+                <span class="btn-icon">✦</span>
+                <span class="btn-label">Claude</span>
+                <span class="btn-sublabel">Anthropic</span>
+            </a>
+            <a href="https://gemini.google.com/" target="_blank" class="btn">
+                <span class="btn-icon">✦</span>
+                <span class="btn-label">Gemini</span>
+                <span class="btn-sublabel">Google</span>
+            </a>
+            <a href="https://chatgpt.com/" target="_blank" class="btn">
+                <span class="btn-icon">✦</span>
+                <span class="btn-label">ChatGPT</span>
+                <span class="btn-sublabel">OpenAI</span>
+            </a>
+            <a href="https://grok.com/" target="_blank" class="btn">
+                <span class="btn-icon">✦</span>
+                <span class="btn-label">Grok</span>
+                <span class="btn-sublabel">xAI</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 7. NOTÍCIAS -->
+    <div class="section noticias">
+        <div class="section-header noticias">
+            <span class="section-emoji">📰</span>
+            <span class="section-title">Notícias</span>
+        </div>
+        <div class="grid">
+            <a href="https://g1.globo.com/" target="_blank" class="btn">
+                <span class="btn-icon">📺</span>
+                <span class="btn-label">G1</span>
+                <span class="btn-sublabel">Globo</span>
+            </a>
+            <a href="https://www.uol.com.br/" target="_blank" class="btn">
+                <span class="btn-icon">🗞️</span>
+                <span class="btn-label">UOL</span>
+                <span class="btn-sublabel">Portal</span>
+            </a>
+            <a href="https://www.folha.uol.com.br/" target="_blank" class="btn">
+                <span class="btn-icon">📄</span>
+                <span class="btn-label">Folha SP</span>
+                <span class="btn-sublabel">Folha de S.Paulo</span>
+            </a>
+            <a href="https://www.estadao.com.br/" target="_blank" class="btn">
+                <span class="btn-icon">📄</span>
+                <span class="btn-label">Estadão</span>
+                <span class="btn-sublabel">O Estado de S.Paulo</span>
+            </a>
+            <a href="https://www.globo.com/" target="_blank" class="btn">
+                <span class="btn-icon">🌐</span>
+                <span class="btn-label">Globo.com</span>
+                <span class="btn-sublabel">Portal</span>
+            </a>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 Sarges. Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>
