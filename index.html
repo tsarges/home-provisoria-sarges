@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarges - Portal de Links</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --navy: #0f2044;
@@ -164,6 +165,18 @@
         .noticias .btn:hover   { background: #fffdf0; }
         .ferrament .btn:hover  { background: #f0fbfc; }
         .ias .btn:hover        { background: #fef5ff; }
+
+        /* ── SERVICE BRAND ICON COLORS ── */
+        .icon-youtube   { color: #FF0000; }
+        .icon-whatsapp  { color: #25D366; }
+        .icon-facebook  { color: #1877F2; }
+        .icon-telegram  { color: #26A5E4; }
+        .icon-gmail     { color: #EA4335; }
+        .icon-outlook   { color: #0078D4; }
+        .icon-teams     { color: #6264A7; }
+        .icon-yahoo     { color: #720E9E; }
+        .icon-oabsp     { color: #003087; }
+        .icon-cloudconv { color: #FF6E3C; }
 
         /* ── IA BRAND COLORS ── */
         .ia-claude     .btn-icon { color: #cc785c; }
@@ -333,6 +346,11 @@
                 <span class="btn-label">OAB/SP</span>
                 <span class="btn-sublabel">São Paulo</span>
             </a>
+            <a href="https://cna.oab.org.br/" target="_blank" class="btn">
+                <span class="btn-icon">🪪</span>
+                <span class="btn-label">CNA</span>
+                <span class="btn-sublabel">Cadastro Adv.</span>
+            </a>
             <a href="https://www.migalhas.com.br/" target="_blank" class="btn">
                 <span class="btn-icon">📋</span>
                 <span class="btn-label">Migalhas</span>
@@ -389,34 +407,39 @@
         </div>
         <div class="grid">
             <a href="https://mail.google.com/" target="_blank" class="btn">
-                <span class="btn-icon">📧</span>
+                <i class="fa-brands fa-google btn-icon icon-gmail"></i>
                 <span class="btn-label">Gmail</span>
                 <span class="btn-sublabel">Google</span>
             </a>
             <a href="https://outlook.live.com/" target="_blank" class="btn">
-                <span class="btn-icon">📧</span>
+                <i class="fa-brands fa-microsoft btn-icon icon-outlook"></i>
                 <span class="btn-label">Outlook</span>
                 <span class="btn-sublabel">Microsoft</span>
             </a>
             <a href="https://mail.yahoo.com/" target="_blank" class="btn">
-                <span class="btn-icon">📧</span>
+                <i class="fa-brands fa-yahoo btn-icon icon-yahoo"></i>
                 <span class="btn-label">Yahoo Mail</span>
                 <span class="btn-sublabel">Yahoo</span>
             </a>
             <a href="https://web.whatsapp.com/" target="_blank" class="btn">
-                <span class="btn-icon">💬</span>
+                <i class="fa-brands fa-whatsapp btn-icon icon-whatsapp"></i>
                 <span class="btn-label">WhatsApp Web</span>
                 <span class="btn-sublabel">Mensagens</span>
             </a>
             <a href="https://teams.microsoft.com/" target="_blank" class="btn">
-                <span class="btn-icon">💼</span>
+                <i class="fa-brands fa-microsoft btn-icon icon-teams"></i>
                 <span class="btn-label">Teams</span>
                 <span class="btn-sublabel">Microsoft</span>
             </a>
             <a href="https://web.telegram.org/" target="_blank" class="btn">
-                <span class="btn-icon">✈️</span>
+                <i class="fa-brands fa-telegram btn-icon icon-telegram"></i>
                 <span class="btn-label">Telegram</span>
                 <span class="btn-sublabel">Web</span>
+            </a>
+            <a href="https://webmail.oabsp.org.br/" target="_blank" class="btn">
+                <i class="fa-solid fa-envelope btn-icon icon-oabsp"></i>
+                <span class="btn-label">E-mail OAB/SP</span>
+                <span class="btn-sublabel">Webmail</span>
             </a>
         </div>
     </div>
@@ -489,12 +512,12 @@
                 <span class="btn-sublabel">Design</span>
             </a>
             <a href="https://www.youtube.com" target="_blank" class="btn">
-                <span class="btn-icon">▶️</span>
+                <i class="fa-brands fa-youtube btn-icon icon-youtube"></i>
                 <span class="btn-label">YouTube</span>
                 <span class="btn-sublabel">Vídeos</span>
             </a>
             <a href="https://www.facebook.com" target="_blank" class="btn">
-                <span class="btn-icon">👥</span>
+                <i class="fa-brands fa-facebook btn-icon icon-facebook"></i>
                 <span class="btn-label">Facebook</span>
                 <span class="btn-sublabel">Social</span>
             </a>
@@ -512,6 +535,11 @@
                 <span class="btn-icon">📄</span>
                 <span class="btn-label">Smallpdf</span>
                 <span class="btn-sublabel">Editar PDF</span>
+            </a>
+            <a href="https://cloudconvert.com/" target="_blank" class="btn">
+                <i class="fa-solid fa-rotate btn-icon icon-cloudconv"></i>
+                <span class="btn-label">CloudConvert</span>
+                <span class="btn-sublabel">Converter Áudio</span>
             </a>
         </div>
     </div>
