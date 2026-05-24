@@ -269,9 +269,22 @@
         .ia-jusia      .btn-icon { color: #e8531a; }
 
         /* ── TRIBUNAL & SYSTEM ICON COLORS ── */
-        .tjsp .btn-icon,     .tjsp .section-emoji     { color: #1e3c72; }
-        .outros .btn-icon,   .outros .section-emoji   { color: #3a6bc4; }
-        .sistemas .btn-icon, .sistemas .section-emoji { color: #0d7060; }
+        /* headers keep the section accent color */
+        .tjsp .section-emoji     { color: #1e3c72; }
+        .outros .section-emoji   { color: #3a6bc4; }
+        .sistemas .section-emoji { color: #0d7060; }
+        /* button icons colored by type, independent of section */
+        /* jurisdiction-grouped icon colors */
+        .icon-tribunal { color: #0f2044; }
+        .icon-trabalho { color: #991b1b; }
+        .icon-esaj     { color: #d97706; }
+        .icon-eproc    { color: #0284c7; }
+        .icon-pje      { color: #0d9488; }
+        .fa-file-lines.btn-icon       { color: #5c35a0; }
+        .fa-briefcase.btn-icon        { color: #c8762a; }
+        .fa-magnifying-glass.btn-icon { color: #2a5298; }
+        .fa-lock.btn-icon             { color: #d44638; }
+        .fa-receipt.btn-icon          { color: #0f9d58; }
 
         /* ── FOOTER ── */
         footer {
@@ -328,32 +341,32 @@
     <!-- 1. TRIBUNAIS DE SÃO PAULO -->
     <div class="section tjsp">
         <div class="section-header tjsp">
-            <i class="fa-solid fa-building-columns section-emoji"></i>
+            <i class="fa-solid fa-location-dot section-emoji"></i>
             <span class="section-title">Tribunais de São Paulo</span>
         </div>
         <div class="grid">
             <a href="https://www.tjsp.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">TJSP</span>
                 <span class="btn-sublabel">São Paulo</span>
             </a>
             <a href="https://www.trtsp.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-scale-balanced btn-icon icon-trabalho"></i>
                 <span class="btn-label">TRT2</span>
                 <span class="btn-sublabel">São Paulo</span>
             </a>
             <a href="https://pje1g.trf3.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">TRF3</span>
                 <span class="btn-sublabel">1º Grau</span>
             </a>
             <a href="https://esaj.tjsp.jus.br/esaj/portal.do?servico=740000" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-folder-open btn-icon"></i>
+                <i class="fa-solid fa-folder-tree btn-icon icon-esaj"></i>
                 <span class="btn-label">E-SAJ SP</span>
                 <span class="btn-sublabel">Portal</span>
             </a>
             <a href="https://sso.tjsp.jus.br/realms/eproc/protocol/openid-connect/auth?kc_idp_hint=tjsp&eproc_client_id=eproc1g.tjsp.jus.br&response_type=code&redirect_uri=https%3A%2F%2Feproc1g.tjsp.jus.br%2Feproc%2Fexterno_controlador.php%3Facao%3DSSO%2Fcallback&client_id=eproc1g.tjsp.jus.br&nonce=d3cd628623a09f802cfc000fdd375b7d&state=5c42b8a1ed6703358ce4996a1d73617f&scope=profile+openid" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-folder-open btn-icon"></i>
+                <i class="fa-solid fa-laptop-file btn-icon icon-eproc"></i>
                 <span class="btn-label">EPROC SP</span>
                 <span class="btn-sublabel">São Paulo</span>
             </a>
@@ -363,47 +376,47 @@
     <!-- 2. OUTROS TRIBUNAIS -->
     <div class="section outros">
         <div class="section-header outros">
-            <i class="fa-solid fa-scale-balanced section-emoji"></i>
+            <i class="fa-solid fa-earth-americas section-emoji"></i>
             <span class="section-title">Outros Tribunais</span>
         </div>
         <div class="grid">
             <a href="https://www.tjrj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">TJRJ</span>
                 <span class="btn-sublabel">Rio de Janeiro</span>
             </a>
             <a href="https://www.tjpb.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">TJPB</span>
                 <span class="btn-sublabel">Paraíba</span>
             </a>
             <a href="https://www.tjmg.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">TJMG</span>
                 <span class="btn-sublabel">Minas Gerais</span>
             </a>
             <a href="https://www.stf.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">STF</span>
                 <span class="btn-sublabel">Supremo</span>
             </a>
             <a href="https://www.stj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
                 <span class="btn-label">STJ</span>
                 <span class="btn-sublabel">Superior Justiça</span>
             </a>
             <a href="https://www.tst.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon"></i>
+                <i class="fa-solid fa-scale-balanced btn-icon icon-trabalho"></i>
                 <span class="btn-label">TST</span>
                 <span class="btn-sublabel">Superior Trabalho</span>
             </a>
             <a href="https://eproc.jfrj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-folder-open btn-icon"></i>
+                <i class="fa-solid fa-laptop-file btn-icon icon-eproc"></i>
                 <span class="btn-label">EPROC JF</span>
                 <span class="btn-sublabel">Justiça Fed. RJ</span>
             </a>
             <a href="https://www.pje.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-folder-open btn-icon"></i>
+                <i class="fa-solid fa-gavel btn-icon icon-pje"></i>
                 <span class="btn-label">PJe</span>
                 <span class="btn-sublabel">Proc. Eletrônico</span>
             </a>
