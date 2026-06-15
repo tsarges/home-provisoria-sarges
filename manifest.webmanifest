@@ -1,0 +1,19 @@
+{
+    "name": "Sarges — Portal de Links",
+    "short_name": "Sarges",
+    "description": "Portal pessoal de links para uso diário",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#f2f5fb",
+    "theme_color": "#0f2044",
+    "lang": "pt-BR",
+    "icons": [
+        {
+            "src": "img/logoSarges2025.png",
+            "sizes": "any",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
+}

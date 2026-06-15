@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarges - Portal de Links</title>
+    <meta name="theme-color" content="#0f2044">
+    <meta name="description" content="Portal pessoal de links para uso diário - Sarges">
+    <meta name="color-scheme" content="light">
+    <title>Sarges — Portal de Links</title>
+    <link rel="manifest" href="manifest.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -11,7 +15,6 @@
             --navy: #0f2044;
             --blue: #1e3c72;
             --blue-mid: #2a5298;
-            --blue-light: #3a6bc4;
             --accent: #c8a96e;
             --white: #ffffff;
             --off-white: #f2f5fb;
@@ -22,18 +25,44 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--off-white);
             color: var(--text-dark);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.5;
         }
+
+        /* ── FOCUS ── */
+        :focus-visible {
+            outline: 3px solid var(--blue-mid);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* ── SKIP LINK ── */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 16px;
+            background: var(--navy);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 0 0 8px 8px;
+            z-index: 1000;
+            text-decoration: none;
+            font-weight: 600;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus { top: 0; }
 
         /* ── HEADER ── */
         header {
-            background: #ffffff;
-            padding: 40px 32px 48px;
+            background: #fff;
+            padding: 40px 32px 32px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -55,18 +84,37 @@
             position: relative; z-index: 1;
         }
         .logo:hover { transform: scale(1.04); }
+        .header-fallback {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4em;
+            color: var(--navy);
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            position: relative; z-index: 1;
+            display: none;
+        }
+        .header-fallback.is-shown { display: block; }
         .header-subtitle {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1em;
+            font-size: 1em;
             color: var(--text-light);
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
+            margin-top: 4px;
+            position: relative; z-index: 1;
+        }
+        .header-clock {
+            font-size: 0.82em;
+            color: var(--text-light);
+            margin-top: 12px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
             position: relative; z-index: 1;
         }
 
         /* ── SEARCH ── */
         .search-wrapper {
-            background: #ffffff;
+            background: #fff;
             border-bottom: 1px solid #e4e9f4;
             padding: 14px 24px;
             display: flex;
@@ -92,7 +140,7 @@
         }
         .search-input {
             width: 100%;
-            padding: 10px 40px 10px 38px;
+            padding: 10px 88px 10px 38px;
             border: 1.5px solid #d0d8ef;
             border-radius: 10px;
             font-family: 'Montserrat', sans-serif;
@@ -100,14 +148,27 @@
             color: var(--text-dark);
             background: var(--off-white);
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
         .search-input:focus {
             border-color: var(--blue-mid);
             box-shadow: 0 0 0 3px rgba(42,82,152,0.12);
-            background: #ffffff;
+            background: #fff;
         }
         .search-input::placeholder { color: var(--text-light); }
+        .search-kbd {
+            position: absolute;
+            right: 44px;
+            font-size: 0.7em;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            background: #fff;
+            border: 1px solid #d0d8ef;
+            border-radius: 4px;
+            padding: 1px 6px;
+            pointer-events: none;
+            line-height: 1.4;
+        }
         .search-clear {
             position: absolute;
             right: 10px;
@@ -119,22 +180,11 @@
             align-items: center;
             padding: 4px 6px;
             border-radius: 6px;
-            transition: color 0.15s ease;
+            transition: color 0.15s ease, background 0.15s ease;
             font-size: 0.9em;
         }
-        .search-clear:hover { color: var(--text-dark); }
+        .search-clear:hover { color: var(--text-dark); background: #eef0f6; }
         .search-clear.visible { display: flex; }
-        .section.hidden { display: none; }
-        .btn.hidden { display: none; }
-        .no-results {
-            text-align: center;
-            padding: 64px 24px;
-            color: var(--text-light);
-            font-size: 0.92em;
-            display: none;
-        }
-        .no-results.visible { display: block; }
-        .no-results-icon { font-size: 2.4em; margin-bottom: 12px; }
 
         /* ── MAIN ── */
         main {
@@ -152,18 +202,10 @@
             border-radius: 16px;
             box-shadow: 0 2px 16px rgba(0,0,0,0.06);
             overflow: hidden;
+        }
+        .section.in-view {
             animation: fadeUp 0.6s ease both;
         }
-        .section:nth-child(1)  { animation-delay: 0.05s; }
-        .section:nth-child(2)  { animation-delay: 0.10s; }
-        .section:nth-child(3)  { animation-delay: 0.15s; }
-        .section:nth-child(4)  { animation-delay: 0.20s; }
-        .section:nth-child(5)  { animation-delay: 0.25s; }
-        .section:nth-child(6)  { animation-delay: 0.30s; }
-        .section:nth-child(7)  { animation-delay: 0.35s; }
-        .section:nth-child(8)  { animation-delay: 0.40s; }
-        .section:nth-child(9)  { animation-delay: 0.45s; }
-
         .section-header {
             display: flex;
             align-items: center;
@@ -171,9 +213,7 @@
             padding: 16px 24px;
             border-bottom: 1px solid #eef0f6;
         }
-
-        .section-emoji { font-size: 1.25em; line-height: 1; }
-
+        .section-emoji { font-size: 1.05em; line-height: 1; width: 1.2em; text-align: center; }
         .section-title {
             font-size: 0.72em;
             font-weight: 700;
@@ -182,26 +222,51 @@
             color: var(--text-light);
         }
 
-        /* Colored left border + header tint per section */
-        .section.tjsp     { border-left: 4px solid #1e3c72; }
-        .section.outros   { border-left: 4px solid #3a6bc4; }
-        .section.sistemas { border-left: 4px solid #0d7060; }
-        .section.juridico { border-left: 4px solid #5c35a0; }
-        .section.email    { border-left: 4px solid #d44638; }
-        .section.produtiv { border-left: 4px solid #0f9d58; }
-        .section.noticias { border-left: 4px solid #f4a100; }
-        .section.ferrament{ border-left: 4px solid #00838f; }
-        .section.ias      { border-left: 4px solid #9c27b0; }
+        /* ── SECTION THEMES ── */
+        .section.tjsp    { border-left: 4px solid #1e3c72; }
+        .section.tjsp    .section-header { background: #eef2ff; }
+        .section.tjsp    .section-emoji  { color: #1e3c72; }
 
-        .section-header.tjsp     { background: #eef2ff; }
-        .section-header.outros   { background: #e8efff; }
-        .section-header.sistemas { background: #e6f5f2; }
-        .section-header.juridico { background: #f5f0ff; }
-        .section-header.email    { background: #fff5f5; }
-        .section-header.produtiv { background: #f0fff6; }
-        .section-header.noticias { background: #fffbf0; }
-        .section-header.ferrament{ background: #f0fbfc; }
-        .section-header.ias      { background: #fdf0ff; }
+        .section.outros  { border-left: 4px solid #3a6bc4; }
+        .section.outros  .section-header { background: #e8efff; }
+        .section.outros  .section-emoji  { color: #3a6bc4; }
+
+        .section.sistemas{ border-left: 4px solid #0d7060; }
+        .section.sistemas.section-header,
+        .section.sistemas .section-header { background: #e6f5f2; }
+        .section.sistemas .section-emoji  { color: #0d7060; }
+
+        .section.juridico{ border-left: 4px solid #5c35a0; }
+        .section.juridico .section-header { background: #f5f0ff; }
+        .section.juridico .section-emoji  { color: #5c35a0; }
+
+        .section.cartorios{border-left: 4px solid #b8860b; }
+        .section.cartorios .section-header{ background: #fdf9ee; }
+        .section.cartorios .section-emoji { color: #b8860b; }
+
+        .section.email   { border-left: 4px solid #d44638; }
+        .section.email   .section-header { background: #fff5f5; }
+        .section.email   .section-emoji  { color: #d44638; }
+
+        .section.produtiv{border-left: 4px solid #0f9d58; }
+        .section.produtiv .section-header{ background: #f0fff6; }
+        .section.produtiv .section-emoji { color: #0f9d58; }
+
+        .section.ferrament{border-left: 4px solid #00838f; }
+        .section.ferrament .section-header{ background: #f0fbfc; }
+        .section.ferrament .section-emoji { color: #00838f; }
+
+        .section.ias     { border-left: 4px solid #9c27b0; }
+        .section.ias     .section-header { background: #fdf0ff; }
+        .section.ias     .section-emoji  { color: #9c27b0; }
+
+        .section.noticias{ border-left: 4px solid #f4a100; }
+        .section.noticias .section-header{ background: #fffbef; }
+        .section.noticias .section-emoji { color: #f4a100; }
+
+        .section.pinned  { border-left: 4px solid var(--accent); }
+        .section.pinned  .section-header { background: #fdf9f0; }
+        .section.pinned  .section-emoji  { color: var(--accent); }
 
         /* ── GRID ── */
         .grid {
@@ -211,7 +276,11 @@
             background: #eef0f6;
         }
 
-        /* ── BUTTON ── */
+        /* ── BUTTON (CARD) ── */
+        .btn-wrap {
+            position: relative;
+            background: var(--card-bg);
+        }
         .btn {
             display: flex;
             flex-direction: column;
@@ -226,27 +295,72 @@
             transition: background 0.18s ease, transform 0.18s ease;
             text-align: center;
             line-height: 1.3;
-            background: var(--card-bg);
             color: var(--text-dark);
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
-
-        .btn:hover { transform: scale(1.03); z-index: 1; position: relative; }
-
-        .btn-icon   { font-size: 1.55em; line-height: 1; }
-        .btn-label  { font-size: 1em; color: var(--text-dark); }
+        .btn:hover { transform: scale(1.03); z-index: 1; }
+        .btn-icon     { font-size: 1.55em; line-height: 1; }
+        .btn-label    { font-size: 1em; color: var(--text-dark); }
         .btn-sublabel { font-size: 0.82em; font-weight: 400; color: var(--text-light); }
 
-        .tjsp .btn:hover     { background: #eef2ff; }
-        .outros .btn:hover   { background: #e8efff; }
+        /* "Open in new tab" hint */
+        .btn::after {
+            content: '\2197';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 0.75em;
+            color: var(--text-light);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .btn:hover::after, .btn:focus-visible::after { opacity: 0.6; }
+
+        /* Pin button */
+        .btn-pin {
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 0.78em;
+            opacity: 0;
+            transition: opacity 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+            z-index: 2;
+            line-height: 1;
+        }
+        .btn-wrap:hover .btn-pin,
+        .btn-pin:focus-visible,
+        .btn-pin.is-pinned { opacity: 1; }
+        .btn-pin:hover { color: var(--accent); background: rgba(200, 169, 110, 0.15); }
+        .btn-pin.is-pinned { color: var(--accent); }
+        .btn-pin.is-pinned:hover { transform: rotate(-20deg); }
+
+        /* Touch devices: pin always visible */
+        @media (hover: none) {
+            .btn-pin { opacity: 0.55; }
+        }
+
+        /* Hover backgrounds per section */
+        .tjsp     .btn:hover { background: #eef2ff; }
+        .outros   .btn:hover { background: #e8efff; }
         .sistemas .btn:hover { background: #e6f5f2; }
         .juridico .btn:hover { background: #f5f0ff; }
-        .email .btn:hover    { background: #fff8f8; }
+        .cartorios .btn:hover{ background: #fdf9ee; }
+        .email    .btn:hover { background: #fff8f8; }
         .produtiv .btn:hover { background: #f2fff7; }
-        .noticias .btn:hover { background: #fffdf0; }
         .ferrament .btn:hover{ background: #f0fbfc; }
-        .ias .btn:hover      { background: #fef5ff; }
+        .ias      .btn:hover { background: #fef5ff; }
+        .noticias .btn:hover { background: #fffdf0; }
+        .pinned   .btn:hover { background: #fefaf0; }
 
-        /* ── SERVICE BRAND ICON COLORS ── */
+        /* ── BRAND ICON COLORS ── */
         .icon-youtube   { color: #FF0000; }
         .icon-whatsapp  { color: #25D366; }
         .icon-facebook  { color: #1877F2; }
@@ -258,7 +372,7 @@
         .icon-oabsp     { color: #003087; }
         .icon-cloudconv { color: #FF6E3C; }
 
-        /* ── IA BRAND COLORS ── */
+        /* AI brand colors */
         .ia-claude     .btn-icon { color: #cc785c; }
         .ia-gemini     .btn-icon { background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC05, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .ia-chatgpt    .btn-icon { color: #10a37f; }
@@ -267,24 +381,39 @@
         .ia-perplexity .btn-icon { color: #1FB8CD; }
         .ia-deepseek   .btn-icon { color: #4D6BFE; }
         .ia-jusia      .btn-icon { color: #e8531a; }
+        .ia-mavis      .btn-icon { color: #a855f7; }
 
-        /* ── TRIBUNAL & SYSTEM ICON COLORS ── */
-        /* headers keep the section accent color */
-        .tjsp .section-emoji     { color: #1e3c72; }
-        .outros .section-emoji   { color: #3a6bc4; }
-        .sistemas .section-emoji { color: #0d7060; }
-        /* button icons colored by type, independent of section */
-        /* jurisdiction-grouped icon colors */
+        /* Tribunal / system icon colors */
         .icon-tribunal { color: #0f2044; }
         .icon-trabalho { color: #991b1b; }
         .icon-esaj     { color: #d97706; }
         .icon-eproc    { color: #0284c7; }
         .icon-pje      { color: #0d9488; }
-        .fa-file-lines.btn-icon       { color: #5c35a0; }
-        .fa-briefcase.btn-icon        { color: #c8762a; }
-        .fa-magnifying-glass.btn-icon { color: #2a5298; }
-        .fa-lock.btn-icon             { color: #d44638; }
-        .fa-receipt.btn-icon          { color: #0f9d58; }
+        .icon-ri       { color: #b8860b; }
+        .icon-signo    { color: #b8860b; }
+
+        /* Generic icon colors by type */
+        .icon-doc       { color: #5c35a0; }
+        .icon-briefcase { color: #c8762a; }
+        .icon-search    { color: #2a5298; }
+        .icon-lock      { color: #d44638; }
+        .icon-money     { color: #0f9d58; }
+        .icon-build     { color: #c8762a; }
+        .icon-bank      { color: #0d7060; }
+        .icon-gov       { color: #1e3c72; }
+
+        /* ── UTILITIES ── */
+        .hidden { display: none !important; }
+
+        .no-results {
+            text-align: center;
+            padding: 64px 24px;
+            color: var(--text-light);
+            font-size: 0.92em;
+            display: none;
+        }
+        .no-results.visible { display: block; }
+        .no-results-icon { font-size: 2em; margin-bottom: 12px; display: block; color: var(--text-light); }
 
         /* ── FOOTER ── */
         footer {
@@ -312,498 +441,60 @@
 
         /* ── RESPONSIVE ── */
         @media (max-width: 600px) {
-            header { padding: 32px 16px 40px; }
+            header { padding: 32px 16px 24px; }
             main { padding: 24px 12px 48px; gap: 24px; }
             .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .btn { padding: 16px 8px 12px; }
+            .header-fallback { font-size: 2em; }
+        }
+
+        /* ── REDUCED MOTION ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
 <body>
 
+<a href="#main" class="skip-link">Pular para o conteúdo</a>
+
 <header>
-    <img src="img/logoSarges2025.png" alt="Logotipo Sarges" class="logo">
+    <img src="img/logoSarges2025.png" alt="Logotipo Sarges" class="logo"
+         onerror="this.style.display='none';document.querySelector('.header-fallback').classList.add('is-shown');">
+    <span class="header-fallback">Sarges</span>
     <p class="header-subtitle">Portal de Links</p>
+    <p class="header-clock" id="headerClock" aria-live="off"></p>
 </header>
 
 <div class="search-wrapper">
     <div class="search-container">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar links..." autocomplete="off">
-        <button class="search-clear" id="searchClear" aria-label="Limpar pesquisa">
-            <i class="fa-solid fa-xmark"></i>
+        <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar links..." autocomplete="off" aria-label="Pesquisar links">
+        <kbd class="search-kbd" id="searchKbd" aria-hidden="true">/</kbd>
+        <button class="search-clear" id="searchClear" aria-label="Limpar pesquisa" type="button">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
     </div>
 </div>
 
-<main>
-
-    <!-- 1. TRIBUNAIS DE SÃO PAULO -->
-    <div class="section tjsp">
-        <div class="section-header tjsp">
-            <i class="fa-solid fa-location-dot section-emoji"></i>
-            <span class="section-title">Tribunais de São Paulo</span>
+<main id="main" aria-label="Conteúdo principal">
+    <section class="section pinned" id="pinnedSection" hidden aria-label="Links fixados">
+        <div class="section-header pinned">
+            <i class="fa-solid fa-thumbtack section-emoji" aria-hidden="true"></i>
+            <span class="section-title">Fixados</span>
         </div>
-        <div class="grid">
-            <a href="https://www.tjsp.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">TJSP</span>
-                <span class="btn-sublabel">São Paulo</span>
-            </a>
-            <a href="https://www.trtsp.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-scale-balanced btn-icon icon-trabalho"></i>
-                <span class="btn-label">TRT2</span>
-                <span class="btn-sublabel">São Paulo</span>
-            </a>
-            <a href="https://pje1g.trf3.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">TRF3</span>
-                <span class="btn-sublabel">1º Grau</span>
-            </a>
-            <a href="https://esaj.tjsp.jus.br/esaj/portal.do?servico=740000" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-folder-tree btn-icon icon-esaj"></i>
-                <span class="btn-label">E-SAJ SP</span>
-                <span class="btn-sublabel">Portal</span>
-            </a>
-            <a href="https://sso.tjsp.jus.br/realms/eproc/protocol/openid-connect/auth?kc_idp_hint=tjsp&eproc_client_id=eproc1g.tjsp.jus.br&response_type=code&redirect_uri=https%3A%2F%2Feproc1g.tjsp.jus.br%2Feproc%2Fexterno_controlador.php%3Facao%3DSSO%2Fcallback&client_id=eproc1g.tjsp.jus.br&nonce=d3cd628623a09f802cfc000fdd375b7d&state=5c42b8a1ed6703358ce4996a1d73617f&scope=profile+openid" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-laptop-file btn-icon icon-eproc"></i>
-                <span class="btn-label">EPROC SP</span>
-                <span class="btn-sublabel">São Paulo</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 2. OUTROS TRIBUNAIS -->
-    <div class="section outros">
-        <div class="section-header outros">
-            <i class="fa-solid fa-earth-americas section-emoji"></i>
-            <span class="section-title">Outros Tribunais</span>
-        </div>
-        <div class="grid">
-            <a href="https://www.tjrj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">TJRJ</span>
-                <span class="btn-sublabel">Rio de Janeiro</span>
-            </a>
-            <a href="https://www.tjpb.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">TJPB</span>
-                <span class="btn-sublabel">Paraíba</span>
-            </a>
-            <a href="https://www.tjmg.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">TJMG</span>
-                <span class="btn-sublabel">Minas Gerais</span>
-            </a>
-            <a href="https://www.stf.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">STF</span>
-                <span class="btn-sublabel">Supremo</span>
-            </a>
-            <a href="https://www.stj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-building-columns btn-icon icon-tribunal"></i>
-                <span class="btn-label">STJ</span>
-                <span class="btn-sublabel">Superior Justiça</span>
-            </a>
-            <a href="https://www.tst.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-scale-balanced btn-icon icon-trabalho"></i>
-                <span class="btn-label">TST</span>
-                <span class="btn-sublabel">Superior Trabalho</span>
-            </a>
-            <a href="https://eproc.jfrj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-laptop-file btn-icon icon-eproc"></i>
-                <span class="btn-label">EPROC JF</span>
-                <span class="btn-sublabel">Justiça Fed. RJ</span>
-            </a>
-            <a href="https://www.pje.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-gavel btn-icon icon-pje"></i>
-                <span class="btn-label">PJe</span>
-                <span class="btn-sublabel">Proc. Eletrônico</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 3. SISTEMAS JURÍDICOS -->
-    <div class="section sistemas">
-        <div class="section-header sistemas">
-            <i class="fa-solid fa-desktop section-emoji"></i>
-            <span class="section-title">Sistemas Jurídicos</span>
-        </div>
-        <div class="grid">
-            <a href="https://ww2.trt2.jus.br/servicos/certidoes/certidao-de-acao-trabalhista" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-file-lines btn-icon"></i>
-                <span class="btn-label">Certidão TRT2</span>
-                <span class="btn-sublabel">Ação Trabalhista</span>
-            </a>
-            <a href="https://web.proadv.adv.br/#/admin/home" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-briefcase btn-icon"></i>
-                <span class="btn-label">E-LAW ADV</span>
-                <span class="btn-sublabel">Gestão</span>
-            </a>
-            <a href="https://www.jusbrasil.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-magnifying-glass btn-icon"></i>
-                <span class="btn-label">Jusbrasil</span>
-                <span class="btn-sublabel">Jurisprudência</span>
-            </a>
-            <a href="https://portalbnmp.cnj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-lock btn-icon"></i>
-                <span class="btn-label">BNMP</span>
-                <span class="btn-sublabel">Mandados de Prisão</span>
-            </a>
-            <a href="https://portaldecustas.tjsp.jus.br/portaltjsp/login.jsp" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-receipt btn-icon"></i>
-                <span class="btn-label">Custas TJSP</span>
-                <span class="btn-sublabel">Portal de Custas</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 4. UTILIDADES JURÍDICAS -->
-    <div class="section juridico">
-        <div class="section-header juridico">
-            <span class="section-emoji">📜</span>
-            <span class="section-title">Utilidades Jurídicas</span>
-        </div>
-        <div class="grid">
-            <a href="https://www.in.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📰</span>
-                <span class="btn-label">D.O.U.</span>
-                <span class="btn-sublabel">Diário Oficial</span>
-            </a>
-            <a href="https://www.gov.br/receitafederal/pt-br" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🏦</span>
-                <span class="btn-label">Receita Federal</span>
-                <span class="btn-sublabel">CPF / CNPJ</span>
-            </a>
-            <a href="https://cav.receita.fazenda.gov.br/autenticacao/login" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🔐</span>
-                <span class="btn-label">e-CAC</span>
-                <span class="btn-sublabel">Receita</span>
-            </a>
-            <a href="https://www.cnj.jus.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">⚖️</span>
-                <span class="btn-label">CNJ</span>
-                <span class="btn-sublabel">Cons. Nac. Justiça</span>
-            </a>
-            <a href="https://www.oabsp.org.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🎓</span>
-                <span class="btn-label">OAB/SP</span>
-                <span class="btn-sublabel">São Paulo</span>
-            </a>
-            <a href="https://cna.oab.org.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🪪</span>
-                <span class="btn-label">CNA</span>
-                <span class="btn-sublabel">Cadastro Adv.</span>
-            </a>
-            <a href="https://www.migalhas.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📋</span>
-                <span class="btn-label">Migalhas</span>
-                <span class="btn-sublabel">Notícias Jurídicas</span>
-            </a>
-            <a href="https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/ConsultaPublica.asp" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🪪</span>
-                <span class="btn-label">Consulta CPF</span>
-                <span class="btn-sublabel">Receita Federal</span>
-            </a>
-            <a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/cnpjreva_Solicitacao.asp" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🏢</span>
-                <span class="btn-label">Consulta CNPJ</span>
-                <span class="btn-sublabel">Receita Federal</span>
-            </a>
-            <a href="https://credlocaliza.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🔎</span>
-                <span class="btn-label">CredLocaliza</span>
-                <span class="btn-sublabel">Crédito</span>
-            </a>
-            <a href="https://www.detran.sp.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🚗</span>
-                <span class="btn-label">DETRAN SP</span>
-                <span class="btn-sublabel">Veículos</span>
-            </a>
-            <a href="https://www.bcb.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🏦</span>
-                <span class="btn-label">Banco Central</span>
-                <span class="btn-sublabel">SELIC / Câmbio</span>
-            </a>
-            <a href="https://portaldatransparencia.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🔍</span>
-                <span class="btn-label">Transparência</span>
-                <span class="btn-sublabel">Portal Federal</span>
-            </a>
-            <a href="https://www.sintegra.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📋</span>
-                <span class="btn-label">SINTEGRA</span>
-                <span class="btn-sublabel">Contribuintes</span>
-            </a>
-            <a href="https://www.conjur.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">⚖️</span>
-                <span class="btn-label">Conjur</span>
-                <span class="btn-sublabel">Jurisprudência</span>
-            </a>
-            <a href="https://validar.iti.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">✅</span>
-                <span class="btn-label">Validar ITI</span>
-                <span class="btn-sublabel">Assinatura Digital</span>
-            </a>
-            <a href="https://portal.sap.sp.gov.br/formularios/paradeiro" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🔎</span>
-                <span class="btn-label">Busca Paradeiro</span>
-                <span class="btn-sublabel">SAP/SP</span>
-            </a>
-            <a href="https://www.jucesp.sp.gov.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🏢</span>
-                <span class="btn-label">Jucesp</span>
-                <span class="btn-sublabel">Junta Comercial</span>
-            </a>
-            <a href="https://www.aasp.org.br/produtos-servicos/custas/sao-paulo/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">💰</span>
-                <span class="btn-label">Custas AASP</span>
-                <span class="btn-sublabel">Tabela SP</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 5. E-MAIL & COMUNICAÇÃO -->
-    <div class="section email">
-        <div class="section-header email">
-            <span class="section-emoji">✉️</span>
-            <span class="section-title">E-mail &amp; Comunicação</span>
-        </div>
-        <div class="grid">
-            <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-google btn-icon icon-gmail"></i>
-                <span class="btn-label">Gmail</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://outlook.live.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-microsoft btn-icon icon-outlook"></i>
-                <span class="btn-label">Outlook</span>
-                <span class="btn-sublabel">Microsoft</span>
-            </a>
-            <a href="https://mail.yahoo.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-yahoo btn-icon icon-yahoo"></i>
-                <span class="btn-label">Yahoo Mail</span>
-                <span class="btn-sublabel">Yahoo</span>
-            </a>
-            <a href="https://web.whatsapp.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-whatsapp btn-icon icon-whatsapp"></i>
-                <span class="btn-label">WhatsApp Web</span>
-                <span class="btn-sublabel">Mensagens</span>
-            </a>
-            <a href="https://teams.microsoft.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-microsoft btn-icon icon-teams"></i>
-                <span class="btn-label">Teams</span>
-                <span class="btn-sublabel">Microsoft</span>
-            </a>
-            <a href="https://web.telegram.org/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-telegram btn-icon icon-telegram"></i>
-                <span class="btn-label">Telegram</span>
-                <span class="btn-sublabel">Web</span>
-            </a>
-            <a href="https://webmail.oabsp.org.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-envelope btn-icon icon-oabsp"></i>
-                <span class="btn-label">E-mail OAB/SP</span>
-                <span class="btn-sublabel">Webmail</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 6. PRODUTIVIDADE & ARMAZENAMENTO -->
-    <div class="section produtiv">
-        <div class="section-header produtiv">
-            <span class="section-emoji">📁</span>
-            <span class="section-title">Produtividade &amp; Armazenamento</span>
-        </div>
-        <div class="grid">
-            <a href="https://drive.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">☁️</span>
-                <span class="btn-label">Google Drive</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://docs.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📝</span>
-                <span class="btn-label">Google Docs</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://onedrive.live.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">☁️</span>
-                <span class="btn-label">OneDrive</span>
-                <span class="btn-sublabel">Microsoft</span>
-            </a>
-            <a href="https://calendar.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📅</span>
-                <span class="btn-label">Google Agenda</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://sheets.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📊</span>
-                <span class="btn-label">Google Sheets</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://www.notion.so/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📓</span>
-                <span class="btn-label">Notion</span>
-                <span class="btn-sublabel">Organização</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 7. FERRAMENTAS GERAIS -->
-    <div class="section ferrament">
-        <div class="section-header ferrament">
-            <span class="section-emoji">🛠️</span>
-            <span class="section-title">Ferramentas Gerais</span>
-        </div>
-        <div class="grid">
-            <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🔍</span>
-                <span class="btn-label">Google</span>
-                <span class="btn-sublabel">Pesquisa</span>
-            </a>
-            <a href="https://translate.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🌐</span>
-                <span class="btn-label">Tradutor</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://maps.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🗺️</span>
-                <span class="btn-label">Google Maps</span>
-                <span class="btn-sublabel">Mapas</span>
-            </a>
-            <a href="https://www.canva.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🎨</span>
-                <span class="btn-label">Canva</span>
-                <span class="btn-sublabel">Design</span>
-            </a>
-            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-youtube btn-icon icon-youtube"></i>
-                <span class="btn-label">YouTube</span>
-                <span class="btn-sublabel">Vídeos</span>
-            </a>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-brands fa-facebook btn-icon icon-facebook"></i>
-                <span class="btn-label">Facebook</span>
-                <span class="btn-sublabel">Social</span>
-            </a>
-            <a href="https://www.chess.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">♟️</span>
-                <span class="btn-label">Chess.com</span>
-                <span class="btn-sublabel">Xadrez</span>
-            </a>
-            <a href="https://www.ilovepdf.com/pt" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📄</span>
-                <span class="btn-label">iLovePDF</span>
-                <span class="btn-sublabel">Editar PDF</span>
-            </a>
-            <a href="https://smallpdf.com/pt" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📄</span>
-                <span class="btn-label">Smallpdf</span>
-                <span class="btn-sublabel">Editar PDF</span>
-            </a>
-            <a href="https://cloudconvert.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <i class="fa-solid fa-rotate btn-icon icon-cloudconv"></i>
-                <span class="btn-label">CloudConvert</span>
-                <span class="btn-sublabel">Converter Áudio</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 8. INTELIGÊNCIAS ARTIFICIAIS -->
-    <div class="section ias">
-        <div class="section-header ias">
-            <span class="section-emoji">🤖</span>
-            <span class="section-title">Inteligências Artificiais</span>
-        </div>
-        <div class="grid">
-            <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer" class="btn ia-claude">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">Claude</span>
-                <span class="btn-sublabel">Anthropic</span>
-            </a>
-            <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="btn ia-gemini">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">Gemini</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn ia-chatgpt">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">ChatGPT</span>
-                <span class="btn-sublabel">OpenAI</span>
-            </a>
-            <a href="https://grok.com/" target="_blank" rel="noopener noreferrer" class="btn ia-grok">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">Grok</span>
-                <span class="btn-sublabel">xAI</span>
-            </a>
-            <a href="https://copilot.microsoft.com/" target="_blank" rel="noopener noreferrer" class="btn ia-copilot">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">Copilot</span>
-                <span class="btn-sublabel">Microsoft</span>
-            </a>
-            <a href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer" class="btn ia-perplexity">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">Perplexity</span>
-                <span class="btn-sublabel">Pesquisa IA</span>
-            </a>
-            <a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer" class="btn ia-deepseek">
-                <span class="btn-icon">✦</span>
-                <span class="btn-label">DeepSeek</span>
-                <span class="btn-sublabel">DeepSeek</span>
-            </a>
-            <a href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📒</span>
-                <span class="btn-label">NotebookLM</span>
-                <span class="btn-sublabel">Google</span>
-            </a>
-            <a href="https://ia.jusbrasil.com.br/conversa?utm_source=bing&utm_medium=cpc&utm_campaign=jusia.bing&utm_content=text--&campaign=TRUE&msclkid=190dbc324116103a9213d62034ceb9ea" target="_blank" rel="noopener noreferrer" class="btn ia-jusia">
-                <span class="btn-icon">⚖️</span>
-                <span class="btn-label">JusIA</span>
-                <span class="btn-sublabel">Jusbrasil</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 9. NOTÍCIAS -->
-    <div class="section noticias">
-        <div class="section-header noticias">
-            <span class="section-emoji">📰</span>
-            <span class="section-title">Notícias</span>
-        </div>
-        <div class="grid">
-            <a href="https://g1.globo.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📺</span>
-                <span class="btn-label">G1</span>
-                <span class="btn-sublabel">Globo</span>
-            </a>
-            <a href="https://www.uol.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🗞️</span>
-                <span class="btn-label">UOL</span>
-                <span class="btn-sublabel">Portal</span>
-            </a>
-            <a href="https://www.folha.uol.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📄</span>
-                <span class="btn-label">Folha SP</span>
-                <span class="btn-sublabel">Folha de S.Paulo</span>
-            </a>
-            <a href="https://www.estadao.com.br/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">📄</span>
-                <span class="btn-label">Estadão</span>
-                <span class="btn-sublabel">O Estado de S.Paulo</span>
-            </a>
-            <a href="https://www.globo.com/" target="_blank" rel="noopener noreferrer" class="btn">
-                <span class="btn-icon">🌐</span>
-                <span class="btn-label">Globo.com</span>
-                <span class="btn-sublabel">Portal</span>
-            </a>
-        </div>
-    </div>
-
-    <div class="no-results" id="noResults">
-        <div class="no-results-icon">🔍</div>
-        <p>Nenhum link encontrado para "<strong id="noResultsQuery"></strong>".</p>
-    </div>
-
+        <div class="grid" id="pinnedGrid"></div>
+    </section>
 </main>
+
+<div class="no-results" id="noResults" role="status" aria-live="polite">
+    <i class="fa-solid fa-circle-exclamation no-results-icon" aria-hidden="true"></i>
+    <p>Nenhum link encontrado para &ldquo;<strong id="noResultsQuery"></strong>&rdquo;.</p>
+</div>
 
 <footer>
     <p>&copy; 2026 Sarges. Todos os direitos reservados.</p>
@@ -811,46 +502,381 @@
 
 <script>
 (function () {
-    const input    = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('searchClear');
-    const noResults = document.getElementById('noResults');
-    const noResultsQuery = document.getElementById('noResultsQuery');
-    const sections = document.querySelectorAll('main .section');
+    'use strict';
 
-    input.addEventListener('input', function () {
-        const query = this.value.trim().toLowerCase();
+    /* ════════════════════════════════════════════════════
+       DATA  —  edite este array para adicionar/remover links
+       ════════════════════════════════════════════════════ */
+    // ── URL para abrir o Mavis (substitua pela sua) ──
+    const MAVIS_URL = 'https://agent.minimax.io/mavis?id=409470535262524';
 
+    const SECTIONS = [
+        {
+            id: 'tjsp',
+            title: 'Tribunais de São Paulo',
+            icon: 'fa-solid fa-location-dot',
+            items: [
+                { label: 'TJSP',      sublabel: 'São Paulo',          icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://www.tjsp.jus.br/' },
+                { label: 'TRT2',      sublabel: 'São Paulo',          icon: 'fa-solid fa-scale-balanced',    iconClass: 'icon-trabalho', url: 'https://www.trtsp.jus.br/' },
+                { label: 'TRF3',      sublabel: '1º Grau',            icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://pje1g.trf3.jus.br/' },
+                { label: 'E-SAJ SP',  sublabel: 'Portal',             icon: 'fa-solid fa-folder-tree',       iconClass: 'icon-esaj',     url: 'https://esaj.tjsp.jus.br/esaj/portal.do?servico=740000' },
+                { label: 'EPROC SP',  sublabel: 'São Paulo',          icon: 'fa-solid fa-laptop-file',       iconClass: 'icon-eproc',    url: 'https://eproc1g.tjsp.jus.br/' },
+            ]
+        },
+        {
+            id: 'outros',
+            title: 'Outros Tribunais',
+            icon: 'fa-solid fa-earth-americas',
+            items: [
+                { label: 'TJRJ',     sublabel: 'Rio de Janeiro',     icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://www.tjrj.jus.br/' },
+                { label: 'TJPB',     sublabel: 'Paraíba',            icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://www.tjpb.jus.br/' },
+                { label: 'TJMG',     sublabel: 'Minas Gerais',       icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://www.tjmg.jus.br/' },
+                { label: 'STF',      sublabel: 'Supremo',            icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://www.stf.jus.br/' },
+                { label: 'STJ',      sublabel: 'Superior Justiça',   icon: 'fa-solid fa-building-columns', iconClass: 'icon-tribunal', url: 'https://www.stj.jus.br/' },
+                { label: 'TST',      sublabel: 'Superior Trabalho',  icon: 'fa-solid fa-scale-balanced',    iconClass: 'icon-trabalho', url: 'https://www.tst.jus.br/' },
+                { label: 'EPROC JF', sublabel: 'Justiça Fed. RJ',    icon: 'fa-solid fa-laptop-file',       iconClass: 'icon-eproc',    url: 'https://eproc.jfrj.jus.br/' },
+                { label: 'PJe',      sublabel: 'Proc. Eletrônico',   icon: 'fa-solid fa-gavel',             iconClass: 'icon-pje',      url: 'https://www.pje.jus.br/' },
+            ]
+        },
+        {
+            id: 'sistemas',
+            title: 'Sistemas Jurídicos',
+            icon: 'fa-solid fa-desktop',
+            items: [
+                { label: 'Certidão TRT2', sublabel: 'Ação Trabalhista',  icon: 'fa-solid fa-file-lines',    iconClass: 'icon-doc',       url: 'https://ww2.trt2.jus.br/servicos/certidoes/certidao-de-acao-trabalhista' },
+                { label: 'E-LAW ADV',     sublabel: 'Gestão',            icon: 'fa-solid fa-briefcase',     iconClass: 'icon-briefcase', url: 'https://web.proadv.adv.br/#/admin/home' },
+                { label: 'Jusbrasil',     sublabel: 'Jurisprudência',    icon: 'fa-solid fa-magnifying-glass', iconClass: 'icon-search',  url: 'https://www.jusbrasil.com.br/' },
+                { label: 'BNMP',          sublabel: 'Mandados de Prisão',icon: 'fa-solid fa-lock',          iconClass: 'icon-lock',      url: 'https://portalbnmp.cnj.jus.br/' },
+                { label: 'Custas TJSP',   sublabel: 'Portal de Custas',  icon: 'fa-solid fa-receipt',       iconClass: 'icon-money',     url: 'https://portaldecustas.tjsp.jus.br/portaltjsp/login.jsp' },
+                { label: 'RI-Digital',    sublabel: 'Reg. Imóveis',      icon: 'fa-solid fa-house-chimney', iconClass: 'icon-ri',        url: 'https://ridigital.org.br/' },
+                { label: 'Signo',         sublabel: 'Tabelionato',       icon: 'fa-solid fa-signature',     iconClass: 'icon-signo',     url: 'https://www.signo.org.br/#/login' },
+            ]
+        },
+        {
+            id: 'juridico',
+            title: 'Utilidades Jurídicas',
+            icon: 'fa-solid fa-scale-balanced',
+            items: [
+                { label: 'D.O.U.',          sublabel: 'Diário Oficial',          icon: 'fa-solid fa-scroll',             iconClass: 'icon-gov',   url: 'https://www.in.gov.br/' },
+                { label: 'Receita Federal', sublabel: 'CPF / CNPJ',              icon: 'fa-solid fa-building-columns',   iconClass: 'icon-bank',  url: 'https://www.gov.br/receitafederal/pt-br' },
+                { label: 'e-CAC',           sublabel: 'Receita',                 icon: 'fa-solid fa-key',                iconClass: 'icon-lock',  url: 'https://cav.receita.fazenda.gov.br/autenticacao/login' },
+                { label: 'CNJ',             sublabel: 'Cons. Nac. Justiça',      icon: 'fa-solid fa-landmark',           iconClass: 'icon-gov',   url: 'https://www.cnj.jus.br/' },
+                { label: 'OAB/SP',          sublabel: 'São Paulo',               icon: 'fa-solid fa-graduation-cap',     iconClass: 'icon-gov',   url: 'https://www.oabsp.org.br/' },
+                { label: 'CNA',             sublabel: 'Cadastro Adv.',           icon: 'fa-solid fa-id-card',            iconClass: 'icon-gov',   url: 'https://cna.oab.org.br/' },
+                { label: 'Migalhas',        sublabel: 'Notícias Jurídicas',      icon: 'fa-solid fa-newspaper',          iconClass: 'icon-doc',   url: 'https://www.migalhas.com.br/' },
+                { label: 'Consulta CPF',    sublabel: 'Receita Federal',         icon: 'fa-solid fa-id-card',            iconClass: 'icon-gov',   url: 'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/ConsultaPublica.asp' },
+                { label: 'Consulta CNPJ',   sublabel: 'Receita Federal',         icon: 'fa-solid fa-building',           iconClass: 'icon-bank',  url: 'https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/cnpjreva_Solicitacao.asp' },
+                { label: 'DETRAN SP',       sublabel: 'Veículos',                icon: 'fa-solid fa-car',                iconClass: 'icon-build', url: 'https://www.detran.sp.gov.br/' },
+                { label: 'Banco Central',   sublabel: 'SELIC / Câmbio',          icon: 'fa-solid fa-building-columns',   iconClass: 'icon-bank',  url: 'https://www.bcb.gov.br/' },
+                { label: 'Transparência',   sublabel: 'Portal Federal',          icon: 'fa-solid fa-magnifying-glass',   iconClass: 'icon-search',url: 'https://portaldatransparencia.gov.br/' },
+                { label: 'SINTEGRA',        sublabel: 'Contribuintes',           icon: 'fa-solid fa-clipboard-list',     iconClass: 'icon-doc',   url: 'https://www.sintegra.gov.br/' },
+                { label: 'Conjur',          sublabel: 'Jurisprudência',          icon: 'fa-solid fa-balance-scale',      iconClass: 'icon-doc',   url: 'https://www.conjur.com.br/' },
+            ]
+        },
+        {
+            id: 'cartorios',
+            title: 'Cartórios & Assinatura',
+            icon: 'fa-solid fa-pen-to-square',
+            items: [
+                { label: 'Validar ITI',     sublabel: 'Assinatura Digital',      icon: 'fa-solid fa-circle-check',       iconClass: 'icon-money', url: 'https://validar.iti.gov.br/' },
+                { label: 'Custas AASP',     sublabel: 'Tabela SP',               icon: 'fa-solid fa-coins',              iconClass: 'icon-money', url: 'https://www.aasp.org.br/produtos-servicos/custas/sao-paulo/' },
+                { label: 'Busca Paradeiro', sublabel: 'SAP/SP',                  icon: 'fa-solid fa-magnifying-glass',   iconClass: 'icon-search',url: 'https://portal.sap.sp.gov.br/formularios/paradeiro' },
+                { label: 'Jucesp',          sublabel: 'Junta Comercial',         icon: 'fa-solid fa-building',           iconClass: 'icon-bank',  url: 'https://www.jucesp.sp.gov.br/' },
+                { label: 'CredLocaliza',    sublabel: 'Crédito',                 icon: 'fa-solid fa-magnifying-glass',   iconClass: 'icon-search',url: 'https://credlocaliza.com.br/' },
+            ]
+        },
+        {
+            id: 'email',
+            title: 'E-mail & Comunicação',
+            icon: 'fa-solid fa-envelope',
+            items: [
+                { label: 'Gmail',         sublabel: 'Google',     icon: 'fa-brands fa-google',      iconClass: 'icon-gmail',    url: 'https://mail.google.com/' },
+                { label: 'Outlook',       sublabel: 'Microsoft',  icon: 'fa-brands fa-microsoft',   iconClass: 'icon-outlook',  url: 'https://outlook.live.com/' },
+                { label: 'Yahoo Mail',    sublabel: 'Yahoo',      icon: 'fa-brands fa-yahoo',       iconClass: 'icon-yahoo',    url: 'https://mail.yahoo.com/' },
+                { label: 'WhatsApp Web',  sublabel: 'Mensagens',  icon: 'fa-brands fa-whatsapp',    iconClass: 'icon-whatsapp', url: 'https://web.whatsapp.com/' },
+                { label: 'Teams',         sublabel: 'Microsoft',  icon: 'fa-brands fa-microsoft',   iconClass: 'icon-teams',    url: 'https://teams.microsoft.com/' },
+                { label: 'Telegram',      sublabel: 'Web',        icon: 'fa-brands fa-telegram',    iconClass: 'icon-telegram', url: 'https://web.telegram.org/' },
+                { label: 'E-mail OAB/SP', sublabel: 'Webmail',    icon: 'fa-solid fa-envelope',     iconClass: 'icon-oabsp',    url: 'https://webmail.oabsp.org.br/' },
+            ]
+        },
+        {
+            id: 'produtiv',
+            title: 'Produtividade & Armazenamento',
+            icon: 'fa-solid fa-folder-tree',
+            items: [
+                { label: 'Google Drive',  sublabel: 'Google',      icon: 'fa-solid fa-cloud',         iconClass: 'icon-outlook', url: 'https://drive.google.com/' },
+                { label: 'Google Docs',   sublabel: 'Google',      icon: 'fa-solid fa-file-lines',    iconClass: 'icon-outlook', url: 'https://docs.google.com/' },
+                { label: 'OneDrive',      sublabel: 'Microsoft',   icon: 'fa-solid fa-cloud',         iconClass: 'icon-outlook', url: 'https://onedrive.live.com/' },
+                { label: 'Google Agenda', sublabel: 'Google',      icon: 'fa-solid fa-calendar',      iconClass: 'icon-outlook', url: 'https://calendar.google.com/' },
+                { label: 'Google Sheets', sublabel: 'Google',      icon: 'fa-solid fa-table',         iconClass: 'icon-outlook', url: 'https://sheets.google.com/' },
+                { label: 'Notion',        sublabel: 'Organização', icon: 'fa-solid fa-note-sticky',   iconClass: 'icon-doc',     url: 'https://www.notion.so/' },
+            ]
+        },
+        {
+            id: 'ferrament',
+            title: 'Ferramentas Gerais',
+            icon: 'fa-solid fa-toolbox',
+            items: [
+                { label: 'Google',         sublabel: 'Pesquisa',        icon: 'fa-solid fa-magnifying-glass', iconClass: 'icon-search',  url: 'https://www.google.com' },
+                { label: 'Tradutor',       sublabel: 'Google',          icon: 'fa-solid fa-language',         iconClass: 'icon-search',  url: 'https://translate.google.com/' },
+                { label: 'Google Maps',    sublabel: 'Mapas',           icon: 'fa-solid fa-map-location-dot', iconClass: 'icon-search',  url: 'https://maps.google.com/' },
+                { label: 'Canva',          sublabel: 'Design',          icon: 'fa-solid fa-palette',          iconClass: 'icon-build',   url: 'https://www.canva.com/' },
+                { label: 'YouTube',        sublabel: 'Vídeos',          icon: 'fa-brands fa-youtube',         iconClass: 'icon-youtube', url: 'https://www.youtube.com' },
+                { label: 'Facebook',       sublabel: 'Social',          icon: 'fa-brands fa-facebook',        iconClass: 'icon-facebook', url: 'https://www.facebook.com' },
+                { label: 'Chess.com',      sublabel: 'Xadrez',          icon: 'fa-solid fa-chess',            iconClass: 'icon-build',   url: 'https://www.chess.com/' },
+                { label: 'iLovePDF',       sublabel: 'Editar PDF',      icon: 'fa-solid fa-file-pdf',         iconClass: 'icon-doc',     url: 'https://www.ilovepdf.com/pt' },
+                { label: 'Smallpdf',       sublabel: 'Editar PDF',      icon: 'fa-solid fa-file-pdf',         iconClass: 'icon-doc',     url: 'https://smallpdf.com/pt' },
+                { label: 'CloudConvert',   sublabel: 'Converter',       icon: 'fa-solid fa-rotate',           iconClass: 'icon-cloudconv', url: 'https://cloudconvert.com/' },
+            ]
+        },
+        {
+            id: 'ias',
+            title: 'Inteligências Artificiais',
+            icon: 'fa-solid fa-robot',
+            items: [
+                { label: 'Mavis',      sublabel: 'Seu Assistente',icon: 'fa-solid fa-microchip-ai', cls: 'ia-mavis',     url: MAVIS_URL },
+                { label: 'Claude',     sublabel: 'Anthropic',     icon: 'fa-solid fa-feather',         cls: 'ia-claude',     url: 'https://claude.ai/' },
+                { label: 'Gemini',     sublabel: 'Google',        icon: 'fa-brands fa-google',         cls: 'ia-gemini',     url: 'https://gemini.google.com/' },
+                { label: 'ChatGPT',    sublabel: 'OpenAI',        icon: 'fa-solid fa-comment-dots',    cls: 'ia-chatgpt',    url: 'https://chatgpt.com/' },
+                { label: 'Grok',       sublabel: 'xAI',           icon: 'fa-brands fa-x-twitter',      cls: 'ia-grok',       url: 'https://grok.com/' },
+                { label: 'Copilot',    sublabel: 'Microsoft',     icon: 'fa-brands fa-microsoft',      cls: 'ia-copilot',    url: 'https://copilot.microsoft.com/' },
+                { label: 'Perplexity', sublabel: 'Pesquisa IA',   icon: 'fa-solid fa-magnifying-glass',cls: 'ia-perplexity', url: 'https://www.perplexity.ai/' },
+                { label: 'DeepSeek',   sublabel: 'DeepSeek',      icon: 'fa-solid fa-water',           cls: 'ia-deepseek',   url: 'https://chat.deepseek.com/' },
+                { label: 'NotebookLM', sublabel: 'Google',        icon: 'fa-solid fa-book',            cls: '',              url: 'https://notebooklm.google.com/' },
+                { label: 'JusIA',      sublabel: 'Jusbrasil',     icon: 'fa-solid fa-scale-balanced',  cls: 'ia-jusia',      url: 'https://ia.jusbrasil.com.br/conversa' },
+            ]
+        },
+        {
+            id: 'noticias',
+            title: 'Notícias',
+            icon: 'fa-solid fa-newspaper',
+            items: [
+                { label: 'G1',        sublabel: 'Globo',                icon: 'fa-solid fa-tv',        iconClass: 'icon-build',  url: 'https://g1.globo.com/' },
+                { label: 'UOL',       sublabel: 'Portal',               icon: 'fa-solid fa-newspaper', iconClass: 'icon-build',  url: 'https://www.uol.com.br/' },
+                { label: 'Folha SP',  sublabel: 'Folha de S.Paulo',     icon: 'fa-solid fa-newspaper', iconClass: 'icon-build',  url: 'https://www.folha.uol.com.br/' },
+                { label: 'Estadão',   sublabel: 'O Estado de S.Paulo',  icon: 'fa-solid fa-newspaper', iconClass: 'icon-build',  url: 'https://www.estadao.com.br/' },
+                { label: 'Globo.com', sublabel: 'Portal',               icon: 'fa-solid fa-globe',     iconClass: 'icon-search', url: 'https://www.globo.com/' },
+            ]
+        },
+    ];
+
+    /* ════════════════════════════════════════════════════
+       STATE  —  pinos salvos no localStorage
+       ════════════════════════════════════════════════════ */
+    const PINS_KEY = 'sarges:pinned';
+    const getPins = () => {
+        try { return JSON.parse(localStorage.getItem(PINS_KEY) || '[]'); }
+        catch (_) { return []; }
+    };
+    const setPins = (arr) => {
+        try { localStorage.setItem(PINS_KEY, JSON.stringify(arr)); } catch (_) {}
+    };
+
+    /* ════════════════════════════════════════════════════
+       HELPERS
+       ════════════════════════════════════════════════════ */
+    const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+
+    function renderButton(item, sectionId) {
+        const extra = item.cls ? ` ${item.cls}` : '';
+        const iconCls = item.iconClass ? ` ${item.iconClass}` : '';
+        const searchText = (item.label + ' ' + item.sublabel).toLowerCase();
+        return `
+            <div class="btn-wrap"
+                 data-url="${escapeHTML(item.url)}"
+                 data-section="${sectionId}"
+                 data-label="${escapeHTML(searchText)}">
+                <button class="btn-pin" type="button"
+                        aria-label="Fixar ${escapeHTML(item.label)}"
+                        data-pin-url="${escapeHTML(item.url)}">
+                    <i class="fa-solid fa-thumbtack" aria-hidden="true"></i>
+                </button>
+                <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer"
+                   class="btn${extra}">
+                    <i class="${item.icon} btn-icon${iconCls}" aria-hidden="true"></i>
+                    <span class="btn-label">${escapeHTML(item.label)}</span>
+                    <span class="btn-sublabel">${escapeHTML(item.sublabel)}</span>
+                </a>
+            </div>
+        `;
+    }
+
+    function renderSection(section) {
+        return `
+            <section class="section ${section.id}" data-section-id="${section.id}">
+                <div class="section-header ${section.id}">
+                    <i class="${section.icon} section-emoji" aria-hidden="true"></i>
+                    <span class="section-title">${escapeHTML(section.title)}</span>
+                </div>
+                <div class="grid">
+                    ${section.items.map(i => renderButton(i, section.id)).join('')}
+                </div>
+            </section>
+        `;
+    }
+
+    function renderPinned() {
+        const pins = getPins();
+        const section = document.getElementById('pinnedSection');
+        const grid    = document.getElementById('pinnedGrid');
+        if (pins.length === 0) {
+            section.hidden = true;
+            grid.innerHTML = '';
+            return;
+        }
+        const allItems = [];
+        SECTIONS.forEach(s => s.items.forEach(i => allItems.push({ ...i, _section: s.id })));
+        const pinnedItems = pins
+            .map(url => allItems.find(i => i.url === url))
+            .filter(Boolean);
+        if (pinnedItems.length === 0) {
+            section.hidden = true;
+            return;
+        }
+        grid.innerHTML = pinnedItems.map(i => renderButton(i, 'pinned')).join('');
+        section.hidden = false;
+    }
+
+    /* ════════════════════════════════════════════════════
+       INIT
+       ════════════════════════════════════════════════════ */
+    const main = document.getElementById('main');
+    main.insertAdjacentHTML('beforeend', SECTIONS.map(renderSection).join(''));
+    renderPinned();
+    updatePinStates();
+
+    /* ════════════════════════════════════════════════════
+       PIN TOGGLE
+       ════════════════════════════════════════════════════ */
+    function updatePinStates() {
+        const pins = getPins();
+        document.querySelectorAll('.btn-pin').forEach(b => {
+            const isPinned = pins.includes(b.dataset.pinUrl);
+            b.classList.toggle('is-pinned', isPinned);
+            const label = b.closest('.btn-wrap')?.querySelector('.btn-label')?.textContent || '';
+            b.setAttribute('aria-label', (isPinned ? 'Desafixar ' : 'Fixar ') + label);
+        });
+    }
+
+    main.addEventListener('click', (e) => {
+        const pin = e.target.closest('.btn-pin');
+        if (!pin) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const url = pin.dataset.pinUrl;
+        let pins = getPins();
+        if (pins.includes(url)) {
+            pins = pins.filter(u => u !== url);
+        } else {
+            pins.push(url);
+        }
+        setPins(pins);
+        renderPinned();
+        updatePinStates();
+        applyFilter();
+    });
+
+    /* ════════════════════════════════════════════════════
+       SEARCH
+       ════════════════════════════════════════════════════ */
+    const input        = document.getElementById('searchInput');
+    const clearBtn     = document.getElementById('searchClear');
+    const kbd          = document.getElementById('searchKbd');
+    const noResults    = document.getElementById('noResults');
+    const noResultsQry = document.getElementById('noResultsQuery');
+
+    function applyFilter() {
+        const query = input.value.trim().toLowerCase();
         clearBtn.classList.toggle('visible', query.length > 0);
+        kbd.style.display = query.length > 0 ? 'none' : '';
 
         let totalVisible = 0;
-
-        sections.forEach(function (section) {
-            const btns = section.querySelectorAll('.btn');
+        document.querySelectorAll('main .section').forEach(section => {
+            const wraps = section.querySelectorAll('.btn-wrap');
             let sectionVisible = 0;
-
-            btns.forEach(function (btn) {
-                const label    = (btn.querySelector('.btn-label')?.textContent    || '').toLowerCase();
-                const sublabel = (btn.querySelector('.btn-sublabel')?.textContent || '').toLowerCase();
-                const matches  = !query || label.includes(query) || sublabel.includes(query);
-
-                btn.classList.toggle('hidden', !matches);
+            wraps.forEach(wrap => {
+                const matches = !query || (wrap.dataset.label || '').includes(query);
+                wrap.classList.toggle('hidden', !matches);
                 if (matches) sectionVisible++;
             });
-
             section.classList.toggle('hidden', sectionVisible === 0);
             totalVisible += sectionVisible;
         });
 
-        noResultsQuery.textContent = this.value.trim();
+        noResultsQry.textContent = input.value.trim();
         noResults.classList.toggle('visible', totalVisible === 0 && query.length > 0);
-    });
+    }
 
-    clearBtn.addEventListener('click', function () {
+    input.addEventListener('input', applyFilter);
+
+    clearBtn.addEventListener('click', () => {
         input.value = '';
-        input.dispatchEvent(new Event('input'));
+        applyFilter();
         input.focus();
     });
-}());
+
+    /* ════════════════════════════════════════════════════
+       KEYBOARD SHORTCUTS  —  "/" foca a busca, "Esc" limpa
+       ════════════════════════════════════════════════════ */
+    document.addEventListener('keydown', (e) => {
+        const tag = document.activeElement?.tagName;
+        const typing = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable;
+
+        if (e.key === '/' && !typing) {
+            e.preventDefault();
+            input.focus();
+            input.select();
+        } else if (e.key === 'Escape' && document.activeElement === input) {
+            input.value = '';
+            applyFilter();
+            input.blur();
+        }
+    });
+
+    /* ════════════════════════════════════════════════════
+       CLOCK + GREETING
+       ════════════════════════════════════════════════════ */
+    function updateClock() {
+        const now  = new Date();
+        const date = now.toLocaleDateString('pt-BR', {
+            weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
+        });
+        const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const h = now.getHours();
+        const greet = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+        document.getElementById('headerClock').textContent = `${greet} • ${date} • ${time}`;
+    }
+    updateClock();
+    setInterval(updateClock, 30 * 1000);
+
+    /* ════════════════════════════════════════════════════
+       INTERSECTION OBSERVER  —  animar seções ao entrar na tela
+       ════════════════════════════════════════════════════ */
+    if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('in-view');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -60px 0px', threshold: 0.04 });
+        document.querySelectorAll('main .section').forEach(s => io.observe(s));
+    } else {
+        document.querySelectorAll('main .section').forEach(s => s.classList.add('in-view'));
+    }
+
+    /* ════════════════════════════════════════════════════
+       PWA  —  service worker para cache offline
+       ════════════════════════════════════════════════════ */
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        });
+    }
+})();
 </script>
 
 </body>
