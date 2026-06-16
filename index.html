@@ -5,8 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f2044">
     <meta name="description" content="Portal pessoal de links para uso diário - Sarges">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="light dark">
     <title>Sarges — Portal de Links</title>
+    <script>
+        /* Anti-FOUC: aplica o tema antes da página renderizar */
+        (function () {
+            try {
+                var stored = localStorage.getItem('sarges:theme');
+                var theme = (stored === 'light' || stored === 'dark')
+                    ? stored
+                    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (_) {}
+        })();
+    </script>
     <link rel="manifest" href="manifest.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -58,6 +70,43 @@
             transition: top 0.2s ease;
         }
         .skip-link:focus { top: 0; }
+
+        /* ── THEME TOGGLE BUTTON ── */
+        .theme-toggle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            border: 1px solid #e4e9f4;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            z-index: 2;
+            font-size: 0.95em;
+            padding: 0;
+        }
+        .theme-toggle:hover {
+            background: var(--off-white);
+            transform: rotate(20deg);
+        }
+        [data-theme="dark"] .theme-toggle {
+            border-color: #2a3760;
+            color: var(--text-dark);
+        }
+        [data-theme="dark"] .theme-toggle:hover {
+            background: #1a2342;
+        }
+
+        /* Logo swap via theme (specificidade alta pra vencer .logo { display:block }) */
+        .logo.logo-dark { display: none; }
+        [data-theme="dark"] .logo.logo-light { display: none; }
+        [data-theme="dark"] .logo.logo-dark  { display: block; }
 
         /* ── HEADER ── */
         header {
@@ -448,6 +497,175 @@
             .header-fallback { font-size: 2em; }
         }
 
+        /* ════════════════════════════════════════════════════
+           DARK MODE — AMOLED BLACK
+           ════════════════════════════════════════════════════ */
+        [data-theme="dark"] {
+            --navy: #e6ecf6;
+            --blue: #2a5298;
+            --blue-mid: #4a7bd4;
+            --accent: #d4b67d;
+            --white: #050505;
+            --off-white: #000000;
+            --text-light: #8d9bb8;
+            --text-dark: #d8e0f0;
+            --card-bg: #0d0d0d;
+        }
+
+        [data-theme="dark"] body { background: var(--off-white); color: var(--text-dark); }
+
+        [data-theme="dark"] header { background: var(--white); border-bottom-color: #1a1a1a; }
+        [data-theme="dark"] .header-fallback { color: var(--text-dark); }
+        [data-theme="dark"] .header-subtitle { color: var(--text-light); }
+        [data-theme="dark"] .header-clock { color: var(--text-light); }
+
+        [data-theme="dark"] .theme-toggle { border-color: #222; color: var(--text-dark); }
+        [data-theme="dark"] .theme-toggle:hover { background: #111; }
+
+        [data-theme="dark"] .search-wrapper { background: var(--white); border-bottom-color: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+        [data-theme="dark"] .search-input { background: #111; border-color: #222; color: var(--text-dark); }
+        [data-theme="dark"] .search-input:focus { background: #181818; border-color: var(--blue-mid); }
+        [data-theme="dark"] .search-input::placeholder { color: var(--text-light); }
+        [data-theme="dark"] .search-icon { color: var(--text-light); }
+        [data-theme="dark"] .search-kbd { background: #111; border-color: #222; color: var(--text-light); }
+        [data-theme="dark"] .search-clear { color: var(--text-light); }
+        [data-theme="dark"] .search-clear:hover { background: #222; color: var(--text-dark); }
+
+        [data-theme="dark"] .section { background: var(--card-bg); box-shadow: 0 2px 16px rgba(0,0,0,0.7); }
+        /* Corrige especificidade: seções com temas têm seletores (0,3,0), então usamos seletores equivalentes */
+        [data-theme="dark"] .section.tjsp     .section-header,
+        [data-theme="dark"] .section.outros   .section-header,
+        [data-theme="dark"] .section.sistemas .section-header,
+        [data-theme="dark"] .section.juridico .section-header,
+        [data-theme="dark"] .section.cartorios .section-header,
+        [data-theme="dark"] .section.email    .section-header,
+        [data-theme="dark"] .section.produtiv .section-header,
+        [data-theme="dark"] .section.ferrament .section-header,
+        [data-theme="dark"] .section.ias      .section-header,
+        [data-theme="dark"] .section.noticias .section-header,
+        [data-theme="dark"] .section.pinned   .section-header { background: #111; border-bottom-color: #1a1a1a; }
+        [data-theme="dark"] .section-title { color: var(--text-light); }
+        [data-theme="dark"] .grid { background: #1a1a1a; }
+        [data-theme="dark"] .btn-wrap { background: var(--card-bg); }
+        [data-theme="dark"] .btn { background: var(--card-bg); color: var(--text-dark); }
+        [data-theme="dark"] .btn-label { color: var(--text-dark); }
+        [data-theme="dark"] .btn-sublabel { color: var(--text-light); }
+        [data-theme="dark"] .btn::after { color: var(--text-light); }
+        [data-theme="dark"] .btn-pin { color: var(--text-light); }
+        [data-theme="dark"] .btn-pin:hover { background: rgba(212, 182, 125, 0.18); }
+
+        /* Dark mode — bordas laterais mais vivas por seção */
+        [data-theme="dark"] .section.tjsp     { border-left-color: #5b8de0; }
+        [data-theme="dark"] .section.outros   { border-left-color: #6a9ee8; }
+        [data-theme="dark"] .section.sistemas { border-left-color: #2dd4bf; }
+        [data-theme="dark"] .section.juridico { border-left-color: #a855f7; }
+        [data-theme="dark"] .section.cartorios{ border-left-color: #fbbf24; }
+        [data-theme="dark"] .section.email    { border-left-color: #f87171; }
+        [data-theme="dark"] .section.produtiv { border-left-color: #4ade80; }
+        [data-theme="dark"] .section.ferrament{ border-left-color: #22d3ee; }
+        [data-theme="dark"] .section.ias      { border-left-color: #c084fc; }
+        [data-theme="dark"] .section.noticias { border-left-color: #fbbf24; }
+        [data-theme="dark"] .section.pinned   { border-left-color: var(--accent); }
+
+        /* Dark mode — emoji/ícone do cabeçalho da seção */
+        [data-theme="dark"] .section.tjsp     .section-emoji { color: #5b8de0; }
+        [data-theme="dark"] .section.outros   .section-emoji { color: #6a9ee8; }
+        [data-theme="dark"] .section.sistemas .section-emoji { color: #2dd4bf; }
+        [data-theme="dark"] .section.juridico .section-emoji { color: #a855f7; }
+        [data-theme="dark"] .section.cartorios .section-emoji{ color: #fbbf24; }
+        [data-theme="dark"] .section.email    .section-emoji { color: #f87171; }
+        [data-theme="dark"] .section.produtiv .section-emoji { color: #4ade80; }
+        [data-theme="dark"] .section.ferrament .section-emoji{ color: #22d3ee; }
+        [data-theme="dark"] .section.ias      .section-emoji { color: #c084fc; }
+        [data-theme="dark"] .section.noticias .section-emoji { color: #fbbf24; }
+        [data-theme="dark"] .section.pinned   .section-emoji { color: var(--accent); }
+
+        /* Dark hover — quase preto com leve matiz da seção */
+        [data-theme="dark"] .tjsp     .btn:hover { background: #0a0f1a; }
+        [data-theme="dark"] .outros   .btn:hover { background: #0a0f1a; }
+        [data-theme="dark"] .sistemas .btn:hover { background: #051210; }
+        [data-theme="dark"] .juridico .btn:hover { background: #0d0514; }
+        [data-theme="dark"] .cartorios .btn:hover{ background: #120e03; }
+        [data-theme="dark"] .email    .btn:hover { background: #120505; }
+        [data-theme="dark"] .produtiv .btn:hover { background: #051209; }
+        [data-theme="dark"] .ferrament .btn:hover{ background: #051212; }
+        [data-theme="dark"] .ias      .btn:hover { background: #0d0514; }
+        [data-theme="dark"] .noticias .btn:hover { background: #120e03; }
+        [data-theme="dark"] .pinned   .btn:hover { background: #120e03; }
+
+        /* Dark mode — cores de ícones genéricos (versões mais claras/vivas) */
+        [data-theme="dark"] .icon-tribunal  { color: #7ab0e0; }
+        [data-theme="dark"] .icon-trabalho  { color: #f87171; }
+        [data-theme="dark"] .icon-esaj      { color: #fbbf24; }
+        [data-theme="dark"] .icon-eproc     { color: #60a5fa; }
+        [data-theme="dark"] .icon-pje       { color: #2dd4bf; }
+        [data-theme="dark"] .icon-ri        { color: #fcd34d; }
+        [data-theme="dark"] .icon-signo     { color: #fcd34d; }
+        [data-theme="dark"] .icon-doc       { color: #c084fc; }
+        [data-theme="dark"] .icon-briefcase { color: #fb923c; }
+        [data-theme="dark"] .icon-search    { color: #93c5fd; }
+        [data-theme="dark"] .icon-lock      { color: #f87171; }
+        [data-theme="dark"] .icon-money     { color: #4ade80; }
+        [data-theme="dark"] .icon-build     { color: #fb923c; }
+        [data-theme="dark"] .icon-bank      { color: #2dd4bf; }
+        [data-theme="dark"] .icon-gov       { color: #7ab0e0; }
+        [data-theme="dark"] .icon-oabsp     { color: #93c5fd; }
+        [data-theme="dark"] .icon-cloudconv { color: #fb923c; }
+        [data-theme="dark"] .icon-outlook   { color: #60a5fa; }
+
+        [data-theme="dark"] .no-results { color: var(--text-light); }
+        [data-theme="dark"] .no-results-icon { color: var(--text-light); }
+        [data-theme="dark"] footer { background: linear-gradient(135deg, #000000, #0d1a3a); }
+
+        /* ── FAVICON NOS CARDS ── */
+        .btn-favicon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 4px;
+            display: block;
+        }
+
+        /* ── SEÇÃO RECENTES ── */
+        .section.recents  { border-left: 4px solid #6366f1; }
+        .section.recents  .section-header { background: #f0f0ff; }
+        .section.recents  .section-emoji  { color: #6366f1; }
+        .recents .btn:hover { background: #eff0ff; }
+
+        [data-theme="dark"] .section.recents   { border-left-color: #818cf8; }
+        [data-theme="dark"] .section.recents   .section-header { background: #111; border-bottom-color: #1a1a1a; }
+        [data-theme="dark"] .section.recents   .section-emoji  { color: #818cf8; }
+        [data-theme="dark"] .recents .btn:hover { background: #0a0a14; }
+
+        /* ── COLLAPSE DE SEÇÕES ── */
+        .section-body {
+            overflow: hidden;
+            max-height: 3000px;
+            transition: max-height 0.35s ease;
+        }
+        .section.is-collapsed .section-body { max-height: 0; }
+
+        /* Durante busca, força expansão de seções colapsadas */
+        body.has-search .section-body { max-height: 3000px !important; }
+
+        .section-toggle {
+            margin-left: auto;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.15s ease, color 0.15s ease;
+            font-size: 0.78em;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .section-toggle:hover { background: rgba(0,0,0,0.06); color: var(--text-dark); }
+        .section-toggle i { transition: transform 0.3s ease; display: block; }
+        .section.is-collapsed .section-toggle i { transform: rotate(-90deg); }
+        [data-theme="dark"] .section-toggle:hover { background: rgba(255,255,255,0.07); color: var(--text-dark); }
+
         /* ── REDUCED MOTION ── */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -463,7 +681,12 @@
 <a href="#main" class="skip-link">Pular para o conteúdo</a>
 
 <header>
-    <img src="img/logoSarges2025.png" alt="Logotipo Sarges" class="logo"
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema">
+        <i class="fa-solid fa-moon" aria-hidden="true"></i>
+    </button>
+    <img class="logo logo-light" src="img/logoSarges2025.png" alt="Logotipo Sarges"
+         onerror="this.style.display='none';document.querySelector('.header-fallback').classList.add('is-shown');document.querySelector('.logo-dark').style.display='none';">
+    <img class="logo logo-dark" src="img/logo_sarges_dark.png" alt="Logotipo Sarges (dark)"
          onerror="this.style.display='none';document.querySelector('.header-fallback').classList.add('is-shown');">
     <span class="header-fallback">Sarges</span>
     <p class="header-subtitle">Portal de Links</p>
@@ -482,12 +705,29 @@
 </div>
 
 <main id="main" aria-label="Conteúdo principal">
-    <section class="section pinned" id="pinnedSection" hidden aria-label="Links fixados">
+    <section class="section recents" id="recentsSection" hidden aria-label="Links recentes" data-section-id="recents">
+        <div class="section-header recents">
+            <i class="fa-solid fa-clock-rotate-left section-emoji" aria-hidden="true"></i>
+            <span class="section-title">Visitados Recentemente</span>
+            <button class="section-toggle" type="button" aria-label="Recolher Visitados Recentemente">
+                <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="section-body">
+            <div class="grid" id="recentsGrid"></div>
+        </div>
+    </section>
+    <section class="section pinned" id="pinnedSection" hidden aria-label="Links fixados" data-section-id="pinned">
         <div class="section-header pinned">
             <i class="fa-solid fa-thumbtack section-emoji" aria-hidden="true"></i>
             <span class="section-title">Fixados</span>
+            <button class="section-toggle" type="button" aria-label="Recolher Fixados">
+                <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </button>
         </div>
-        <div class="grid" id="pinnedGrid"></div>
+        <div class="section-body">
+            <div class="grid" id="pinnedGrid"></div>
+        </div>
     </section>
 </main>
 
@@ -661,15 +901,39 @@
     ];
 
     /* ════════════════════════════════════════════════════
-       STATE  —  pinos salvos no localStorage
+       STATE  —  pinos, recentes e colapso no localStorage
        ════════════════════════════════════════════════════ */
-    const PINS_KEY = 'sarges:pinned';
+    const PINS_KEY      = 'sarges:pinned';
+    const RECENTS_KEY   = 'sarges:recents';
+    const COLLAPSED_KEY = 'sarges:collapsed';
+
     const getPins = () => {
         try { return JSON.parse(localStorage.getItem(PINS_KEY) || '[]'); }
         catch (_) { return []; }
     };
     const setPins = (arr) => {
         try { localStorage.setItem(PINS_KEY, JSON.stringify(arr)); } catch (_) {}
+    };
+
+    const getRecents = () => {
+        try { return JSON.parse(localStorage.getItem(RECENTS_KEY) || '[]'); }
+        catch (_) { return []; }
+    };
+    const addRecent = (url) => {
+        try {
+            let r = getRecents().filter(u => u !== url);
+            r.unshift(url);
+            if (r.length > 10) r = r.slice(0, 10);
+            localStorage.setItem(RECENTS_KEY, JSON.stringify(r));
+        } catch (_) {}
+    };
+
+    const getCollapsed = () => {
+        try { return new Set(JSON.parse(localStorage.getItem(COLLAPSED_KEY) || '[]')); }
+        catch (_) { return new Set(); }
+    };
+    const setCollapsed = (set) => {
+        try { localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...set])); } catch (_) {}
     };
 
     /* ════════════════════════════════════════════════════
@@ -679,10 +943,21 @@
         { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
     ));
 
+    function getDomain(url) {
+        try { return new URL(url).hostname; } catch (_) { return ''; }
+    }
+
     function renderButton(item, sectionId) {
-        const extra = item.cls ? ` ${item.cls}` : '';
-        const iconCls = item.iconClass ? ` ${item.iconClass}` : '';
+        const extra      = item.cls       ? ` ${item.cls}`       : '';
+        const iconCls    = item.iconClass  ? ` ${item.iconClass}`  : '';
         const searchText = (item.label + ' ' + item.sublabel).toLowerCase();
+        const domain     = getDomain(item.url);
+        const fav      = domain ? `img/favicons/${domain}.png` : '';
+        /* Se o favicon local não existir, mostra o ícone FontAwesome como fallback.
+           Usa style="display:none" (e não o atributo hidden) para vencer a especificidade do FontAwesome CSS. */
+        const iconHtml = fav
+            ? `<img class="btn-favicon" src="${escapeHTML(fav)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='';"><i class="${item.icon} btn-icon${iconCls}" style="display:none" aria-hidden="true"></i>`
+            : `<i class="${item.icon} btn-icon${iconCls}" aria-hidden="true"></i>`;
         return `
             <div class="btn-wrap"
                  data-url="${escapeHTML(item.url)}"
@@ -695,7 +970,7 @@
                 </button>
                 <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer"
                    class="btn${extra}">
-                    <i class="${item.icon} btn-icon${iconCls}" aria-hidden="true"></i>
+                    ${iconHtml}
                     <span class="btn-label">${escapeHTML(item.label)}</span>
                     <span class="btn-sublabel">${escapeHTML(item.sublabel)}</span>
                 </a>
@@ -709,9 +984,14 @@
                 <div class="section-header ${section.id}">
                     <i class="${section.icon} section-emoji" aria-hidden="true"></i>
                     <span class="section-title">${escapeHTML(section.title)}</span>
+                    <button class="section-toggle" type="button" aria-label="Recolher ${escapeHTML(section.title)}">
+                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                    </button>
                 </div>
-                <div class="grid">
-                    ${section.items.map(i => renderButton(i, section.id)).join('')}
+                <div class="section-body">
+                    <div class="grid">
+                        ${section.items.map(i => renderButton(i, section.id)).join('')}
+                    </div>
                 </div>
             </section>
         `;
@@ -737,6 +1017,22 @@
         }
         grid.innerHTML = pinnedItems.map(i => renderButton(i, 'pinned')).join('');
         section.hidden = false;
+        section.classList.add('in-view');
+    }
+
+    function renderRecents() {
+        const recents = getRecents();
+        const section = document.getElementById('recentsSection');
+        const grid    = document.getElementById('recentsGrid');
+        if (recents.length === 0) { section.hidden = true; grid.innerHTML = ''; return; }
+        const allItems = [];
+        SECTIONS.forEach(s => s.items.forEach(i => allItems.push({ ...i })));
+        const items = recents.map(url => allItems.find(i => i.url === url)).filter(Boolean);
+        if (items.length === 0) { section.hidden = true; return; }
+        grid.innerHTML = items.map(i => renderButton(i, 'recents')).join('');
+        section.hidden = false;
+        section.classList.add('in-view');
+        updatePinStates();
     }
 
     /* ════════════════════════════════════════════════════
@@ -745,7 +1041,9 @@
     const main = document.getElementById('main');
     main.insertAdjacentHTML('beforeend', SECTIONS.map(renderSection).join(''));
     renderPinned();
+    renderRecents();
     updatePinStates();
+    applyCollapsedStates();
 
     /* ════════════════════════════════════════════════════
        PIN TOGGLE
@@ -779,6 +1077,50 @@
     });
 
     /* ════════════════════════════════════════════════════
+       SECTION COLLAPSE
+       ════════════════════════════════════════════════════ */
+    function applyCollapsedStates() {
+        const collapsed = getCollapsed();
+        document.querySelectorAll('main .section[data-section-id]').forEach(section => {
+            const id = section.dataset.sectionId;
+            const isCollapsed = collapsed.has(id);
+            section.classList.toggle('is-collapsed', isCollapsed);
+            const toggle = section.querySelector('.section-toggle');
+            if (toggle) {
+                const title = section.querySelector('.section-title')?.textContent || '';
+                toggle.setAttribute('aria-label', (isCollapsed ? 'Expandir ' : 'Recolher ') + title);
+            }
+        });
+    }
+
+    main.addEventListener('click', (e) => {
+        const toggle = e.target.closest('.section-toggle');
+        if (!toggle) return;
+        const section = toggle.closest('.section');
+        if (!section) return;
+        section.classList.toggle('is-collapsed');
+        const isNowCollapsed = section.classList.contains('is-collapsed');
+        const title = section.querySelector('.section-title')?.textContent || '';
+        toggle.setAttribute('aria-label', (isNowCollapsed ? 'Expandir ' : 'Recolher ') + title);
+        const sectionId = section.dataset.sectionId;
+        if (sectionId) {
+            const collapsed = getCollapsed();
+            isNowCollapsed ? collapsed.add(sectionId) : collapsed.delete(sectionId);
+            setCollapsed(collapsed);
+        }
+    });
+
+    /* ════════════════════════════════════════════════════
+       RECENTES  —  rastrear cliques nos links
+       ════════════════════════════════════════════════════ */
+    main.addEventListener('click', (e) => {
+        const link = e.target.closest('a.btn');
+        if (!link) return;
+        const url = link.getAttribute('href');
+        if (url) { addRecent(url); renderRecents(); }
+    });
+
+    /* ════════════════════════════════════════════════════
        SEARCH
        ════════════════════════════════════════════════════ */
     const input        = document.getElementById('searchInput');
@@ -791,6 +1133,7 @@
         const query = input.value.trim().toLowerCase();
         clearBtn.classList.toggle('visible', query.length > 0);
         kbd.style.display = query.length > 0 ? 'none' : '';
+        document.body.classList.toggle('has-search', query.length > 0);
 
         let totalVisible = 0;
         document.querySelectorAll('main .section').forEach(section => {
@@ -866,6 +1209,46 @@
         document.querySelectorAll('main .section').forEach(s => io.observe(s));
     } else {
         document.querySelectorAll('main .section').forEach(s => s.classList.add('in-view'));
+    }
+
+    /* ════════════════════════════════════════════════════
+       THEME  —  light/dark com persistência
+       ════════════════════════════════════════════════════ */
+    const THEME_KEY = 'sarges:theme';
+    const themeBtn  = document.getElementById('themeToggle');
+    const themeIcon = themeBtn.querySelector('i');
+
+    function getActiveTheme() {
+        const stored = localStorage.getItem(THEME_KEY);
+        if (stored === 'light' || stored === 'dark') return stored;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        themeIcon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        themeBtn.setAttribute('aria-label', theme === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro');
+        const metaThemeColor = document.querySelector('meta[name=theme-color]');
+        if (metaThemeColor) metaThemeColor.setAttribute('content', theme === 'dark' ? '#000000' : '#0f2044');
+    }
+
+    applyTheme(getActiveTheme());
+
+    themeBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem(THEME_KEY, next); } catch (_) {}
+        applyTheme(next);
+    });
+
+    /* Reage a mudanças do sistema APENAS se o usuário não tiver override manual */
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mql.addEventListener) {
+        mql.addEventListener('change', (e) => {
+            if (!localStorage.getItem(THEME_KEY)) {
+                applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
     }
 
     /* ════════════════════════════════════════════════════

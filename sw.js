@@ -4,7 +4,8 @@ const ASSETS = [
     './',
     './index.html',
     './manifest.webmanifest',
-    './img/logoSarges2025.png'
+    './img/logoSarges2025.png',
+    './img/logo_sarges_dark.png'
 ];
 
 self.addEventListener('install', (e) => {
